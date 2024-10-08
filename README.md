@@ -7,7 +7,10 @@
  3. frontend
 
 #backend
-- run command in terminal
+- run db in docker
+```docker-compose up -d```
+
+- go to backend folder
 
 ```cd .\backend\```
 
