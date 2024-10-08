@@ -37,6 +37,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+var userItems = app.MapGroup("/users");
+userItems.MapGet("/{id}", UserService.GetUser);
+userItems.MapPost("/", UserService.CreateUser);
+userItems.MapPut("/{id}", UserService.UpdateUser);
+userItems.MapDelete("/{id}", UserService.DeleteUser);
+
 app.MapGet("/", () => "Hello World!");
 
 app.Run();
