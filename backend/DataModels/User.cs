@@ -4,6 +4,8 @@ public class User
 
     public int UserId { get; set;}
 
+    public int UserName { get; set;}
+
     public int ReferalId { get; set; }
 
     public int Points { get; set; }

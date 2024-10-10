@@ -10,5 +10,9 @@ public class Prize
 
     public byte[]? Image { get; set; }
 
+    public required string ChannelUrl { get; set;}
+
+    public required string ChannelName { get; set;}
+
     public virtual User? Winner { get; set; }
 }
