@@ -39,6 +39,8 @@ app.UseHttpsRedirection();
 
 var userItems = app.MapGroup("/users");
 userItems.MapGet("/{id}", UserService.GetUser);
+userItems.MapGet("/random", UserService.GetRandomUser);
+userItems.MapGet("/referals-count/{id}", UserService.GetReferalsCount);
 userItems.MapPost("/", UserService.CreateUser);
 userItems.MapPut("/{id}", UserService.UpdateUser);
 userItems.MapDelete("/{id}", UserService.DeleteUser);
