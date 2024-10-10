@@ -1,8 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+
 public class UserService()
 {
     public static async Task<IResult> GetUser(int id, AppDBContext db)
     {
         return await db.Users.FindAsync(id)
+                is User user
+                    ? TypedResults.Ok(user)
+                    : TypedResults.NotFound();
+    }
+
+    public static async Task<IResult> GetReferalsCount(int id, AppDBContext db)
+    {
+        var referalsCount =  await db.Users.CountAsync(us => us.ReferalId == id);
+        return TypedResults.Ok(referalsCount);
+    }
+
+    public static async Task<IResult> GetRandomUser(AppDBContext db)
+    {
+        return await db.Users.OrderBy(us => EF.Functions.Random()).FirstAsync()
                 is User user
                     ? TypedResults.Ok(user)
                     : TypedResults.NotFound();
