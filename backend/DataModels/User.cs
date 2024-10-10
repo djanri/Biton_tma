@@ -4,7 +4,7 @@ public class User
 
     public int UserId { get; set;}
 
-    public int UserName { get; set;}
+    public required string UserName { get; set;}
 
     public int ReferalId { get; set; }
 

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20241010194826_AddAdminTableAndChannelToPrize")]
+    [Migration("20241010200247_AddAdminTableAndChannelToPrize")]
     partial class AddAdminTableAndChannelToPrize
     {
         /// <inheritdoc />
@@ -100,8 +100,9 @@ namespace backend.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserName")
-                        .HasColumnType("int");
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
