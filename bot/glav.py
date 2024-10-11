@@ -5,24 +5,18 @@ from aiogram.types.web_app_info import WebAppInfo
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
 import keyboard as krb
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import config as cf
-import database as db
-from database import DataBase
 import os
 from datetime import datetime, timedelta
 from collections import defaultdict
-import sqlite3
-from aiogram import Bot, Dispatcher, executor, types
-from aiogram.dispatcher import FSMContext
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
 import logging
 import requests
 import time
 import aiohttp
+import ApiClient
 
 
 BOT_TOKEN='7061940889:AAHwuc8VIAg2CPAQAel9g-XdJR9Lo8_X4mc'
@@ -42,7 +36,7 @@ def load_bad_words(url):
 # Константы
 POINTS_PER_COMMENT = 1
 MAX_COMMENTS_PER_DAY = 3
-
+apiClient = ApiClient()
 user_data = defaultdict(lambda: {'points': 0, 'comments': 0, 'last_comment_time': datetime.now()})
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
@@ -68,10 +62,10 @@ Not_Sub_Message="Для доступа к функционалу, пожалуй
 storage=MemoryStorage()
 
 # Определяем относительный путь к базе данных
-db_path = os.path.join('database', 'users.db')
+# db_path = os.path.join('database', 'users.db')
 
 # Создаем объект DataBase с относительным путем
-db1 = DataBase(db_path)
+# db1 = DataBase(db_path)
 
 async def check_subscriptions(user_id, channel_ids):
     subscriptions = []
@@ -83,7 +77,7 @@ async def check_subscriptions(user_id, channel_ids):
 
 
 async def on_startup(_):
-    await db.db_start()
+    # await db.db_start()
     print('Бот успешно запущен!')
 
 # Классы для FSM
@@ -124,18 +118,18 @@ async def start(message: types.Message):
 
     chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=message.from_user.id)
     if chek_chanel(chat_member):
-        if not db1.user_exists(message.from_user.id):
+        if not apiClient.user_exists(message.from_user.id):
             start_command = message.text
             referer_id = str(start_command[7:])  # Предполагается, что ссылка начинается с '/start '
             if referer_id != "":
                 if referer_id != str(message.from_user.id):
-                    db1.add_user(message.from_user.id, referer_id)
+                    apiClient.add_user(message.from_user.id, referer_id)
                     await bot.send_message(referer_id, "По вашей ссылке зарегистрировался новый пользователь")
                 else:
-                    db1.add_user(message.from_user.id)
+                    apiClient.add_user(message.from_user.id)
                     await bot.send_message(message.from_user.id, "Нельзя регистрировать по собственной реферальной ссылке!")
             else:
-                db1.add_user(message.from_user.id)
+                apiClient.add_user(message.from_user.id)
         await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!', reply_markup=krb.create_keyboard(user_id))
     else:
         await bot.send_message(message.from_user.id, Not_Sub_Message, reply_markup=krb.My_Chanel)
@@ -204,7 +198,7 @@ async def handle_message(message: types.Message):
         message_text = message.text.lower()
 
         # Получаем текущее количество баллов пользователя
-        current_score = db1.get_user_score(user_id)
+        current_score = apiClient.get_user_score(user_id)
         if current_score is None:
             current_score = 0
 
@@ -215,7 +209,7 @@ async def handle_message(message: types.Message):
 
         if len(user_comments[user_id]) < 3:
             # Начисляем балл, если комментариев меньше 3 за 5 часов
-            db1.update_user_score(user_id, 1)
+            apiClient.update_user_score(user_id, 1)
             current_score += 1
             user_comments[user_id].append(current_time)  # Добавляем текущее время в список
 
@@ -280,7 +274,7 @@ async def add_item_photo(message: types.Message, state: FSMContext):
         data['photo'] = file_id
 
     # Добавляем элемент в базу данных
-    await db1.add_item(state)
+    await apiClient.add_prize(state)
     await message.answer('Приз успешно добавлен!')
     await state.finish()
 
@@ -331,7 +325,7 @@ async def Prof(callback_query: types.CallbackQuery):
         user_name = callback_query.from_user.first_name
         user_last_name = callback_query.from_user.last_name
         user_id = callback_query.from_user.id
-        referals_count = db1.count_referals(user_id)  # предполагается, что функция принимает user_id
+        referals_count = apiClient.count_referals(user_id)  # предполагается, что функция принимает user_id
         full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
         await bot.send_message(callback_query.from_user.id, f'👤 {full_name}\n\nВаш ID: {callback_query.from_user.id}\nВаша реферальная ссылка 🎁: https://t.me/{cf.BOT_NAME}?start={callback_query.from_user.id}\n\nКол-во рефералов: {referals_count}', reply_markup=krb.Back)
 
@@ -342,7 +336,7 @@ async def Back(callback_query: types.CallbackQuery):
 
 def get_all_user_ids():
     # Пример: возвращаем список user_id из базы данных
-    return db1.get_all_user_ids()
+    return apiClient.get_all_user_ids()
 
 # Функция для получения количества реакций на посте
 async def get_reactions_count(post_url):
@@ -354,8 +348,8 @@ async def get_reactions_count(post_url):
 async def channel_message(message: types.Message):
     # Когда в канале появляется новое сообщение, оно будет обрабатываться здесь
     reactions = await reaction(1)
-    user_id1=db1.get_random_user_id()
-    db1.update_user_score(user_id1, reactions * 50)
+    user_id1=apiClient.get_random_user_id()
+    apiClient.update_user_score(user_id1, reactions * 50)
     print(f"Saving to DB")
 
     # Отправляем сообщение пользователю
@@ -394,7 +388,7 @@ async def process_goto_post(callback_query: types.CallbackQuery):
 
     try:
         if final_reactions > initial_reactions:
-            db1.update_user_score(user_id, 50)
+            apiClient.update_user_score(user_id, 50)
             await bot.answer_callback_query(callback_query.id, "Вы получили 50 баллов!")
             await bot.send_message(callback_query.message.chat.id, f"Пользователь {callback_query.from_user.username} получил 50 баллов!")
         else:
