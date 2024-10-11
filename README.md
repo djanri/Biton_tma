@@ -22,6 +22,7 @@
 - to start application run next command
 
 ```dotnet run```
+```dotnet run --project ./backend```
 
 - to start application with hot reload run command
 
