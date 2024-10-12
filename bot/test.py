@@ -101,6 +101,32 @@ def creater(chat_member):
 # Хэндлеры
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
+    # global user_id
+    # user_id = message.from_user.id  # Получаем user_id из сообщения
+    # user_name = message.from_user.first_name
+    # user_last_name = message.from_user.last_name
+    # full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
+    #
+    # chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=message.from_user.id)
+    # if chek_chanel(chat_member):
+    #     if not db1.user_exists(message.from_user.id):
+    #         start_command = message.text
+    #         referer_id = str(start_command[7:])  # Предполагается, что ссылка начинается с '/start '
+    #         if referer_id != "":
+    #             if referer_id != str(message.from_user.id):
+    #                 db1.add_user(message.from_user.id, referer_id)
+    #                 await bot.send_message(referer_id, "По вашей ссылке зарегистрировался новый пользователь")
+    #             else:
+    #                 db1.add_user(message.from_user.id)
+    #                 await bot.send_message(message.from_user.id,
+    #                                        "Нельзя регистрировать по собственной реферальной ссылке!")
+    #         else:
+    #             db1.add_user(message.from_user.id)
+    #     await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!',
+    #                          reply_markup=krb.create_keyboard(user_id))
+    # else:
+    #     await bot.send_message(message.from_user.id, Not_Sub_Message, reply_markup=krb.My_Chanel)
+    #
     global user_id
     user_id = message.from_user.id
     user_name = message.from_user.first_name
@@ -142,6 +168,44 @@ user_comments = defaultdict(list)
 
 @dp.message_handler(content_types=types.ContentTypes.TEXT)
 async def handle_message(message: types.Message):
+    # user_name = message.from_user.first_name
+    # user_last_name = message.from_user.last_name
+    # full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
+    #
+    # if message.chat.type == 'supergroup':
+    #     user_id = message.from_user.id
+    #     message_text = message.text.lower()
+    #
+    #     # Получаем текущее количество баллов пользователя
+    #     current_score = db1.get_user_score(user_id)
+    #     if current_score is None:
+    #         current_score = 0
+    #
+    #     # Проверяем время и количество комментариев
+    #     current_time = time.time()  # Текущее время в секундах с момента начала эпохи
+    #     user_comments[user_id] = [timestamp for timestamp in user_comments[user_id] if
+    #                               current_time - timestamp <= 5 * 3600]  # Оставляем только комментарии за последние 5 часов
+    #
+    #     if len(user_comments[user_id]) < 3:
+    #         # Начисляем балл, если комментариев меньше 3 за 5 часов
+    #         db1.update_user_score(user_id, 1)
+    #         current_score += 1
+    #         user_comments[user_id].append(current_time)  # Добавляем текущее время в список
+    #
+    #         await message.answer(f'{full_name}, Ваши баллы: {current_score}')
+    #     else:
+    #         # Если пользователь достиг лимита, предупреждаем его
+    #         await message.answer(
+    #             f'{full_name}, вы достигли лимита в 3 комментария за 5 часов. Остальные комментарии не будут начислены баллы.')
+    #
+    #     # Проверяем на наличие плохих слов
+    #     if message_text in (".", "плохо", "xxx", "ХУЙ"):
+    #         # current_score -= 1
+    #         await message.delete()  # Удаляем плохое сообщение
+    #         await message.answer(
+    #             f'{full_name}, в Вашем комментарии обнаружено негативное слово!\nСообщение было удалено. Ваши баллы: {current_score}')
+
+
     user_name = message.from_user.first_name
     user_last_name = message.from_user.last_name
     full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
@@ -190,6 +254,29 @@ async def add_item_photo_check(message: types.Message):
 
 @dp.message_handler(content_types=['photo'], state=NewOrder.photo)
 async def add_item_photo(message: types.Message, state: FSMContext):
+    # # Получаем фото и выбираем наибольшее качество
+    # print("Получение фото...")
+    # photo = message.photo[-1]  # берём самое качественное фото (последний элемент)
+    #
+    # # Получаем файл изображения
+    # file_id = photo.file_id
+    # file = await bot.get_file(file_id)
+    #
+    # # Указываем путь для сохранения
+    # way = f'/Gamefication/img/{file.file_path.split("/")[-1]}'  # Добавляем имя файла
+    #
+    # # Скачиваем файл
+    # await bot.download_file(file.file_path, way)  # Сохраняем файл
+    # print("Фото сохранено")
+    #
+    # # Сохраняем идентификатор файла в состоянии
+    # async with state.proxy() as data:
+    #     data['photo'] = file_id
+    #
+    # # Добавляем элемент в базу данных
+    # await db1.add_item(state)
+    # await message.answer('Приз успешно добавлен!')
+    # await state.finish()
     photo = message.photo[-1]
     file_id = photo.file_id
     file = await bot.get_file(file_id)
@@ -246,6 +333,17 @@ async def More(callback_query: types.CallbackQuery):
 # реферальная система
 @dp.callback_query_handler(lambda query: query.data == 'profile')
 async def Prof(callback_query: types.CallbackQuery):
+    # await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id)
+    # if callback_query.message.chat.type == 'private':
+    #     user_name = callback_query.from_user.first_name
+    #     user_last_name = callback_query.from_user.last_name
+    #     user_id = callback_query.from_user.id
+    #     referals_count = db1.count_referals(user_id)  # предполагается, что функция принимает user_id
+    #     full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
+    #     await bot.send_message(callback_query.from_user.id,
+    #                            f'👤 {full_name}\n\nВаш ID: {callback_query.from_user.id}\nВаша реферальная ссылка 🎁: https://t.me/{cf.BOT_NAME}?start={callback_query.from_user.id}\n\nКол-во рефералов: {referals_count}',
+    #                            reply_markup=krb.Back)
+
     await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id)
     if callback_query.message.chat.type == 'private':
         user_name = callback_query.from_user.first_name
@@ -300,6 +398,10 @@ async def More(callback_query: types.CallbackQuery):
             await message.answer("Ошибка. Возможно, бот не имеет доступа к этому каналу.")
         except Exception as e:
             await message.answer(f"Произошла ошибка: {e}")
+
+@dp.callback_query_handler(lambda query: query.data == 'remove')
+async def More(callback_query: types.CallbackQuery):
+    await callback_query.bot.send_message(callback_query.from_user.id , "Введите UserName для удаления пользователя из базы", reply_markup=krb.Back)
 
 # def get_all_user_ids():
 #     # Пример: возвращаем список user_id из базы данных
