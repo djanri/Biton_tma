@@ -27,3 +27,15 @@
 - to start application with hot reload run command
 
 ```dotnet run -watch```
+
+
+#frontend
+
+- install cert 
+```mkcert -install```
+
+- add to hosts file ("c:\Windows\System32\drivers\etc\hosts")
+```127.0.0.1 biton-tma.local```
+
+- open in browser url https://biton-tma.local
+
