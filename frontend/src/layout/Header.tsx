@@ -1,26 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import UserProps from "../models/UserProps";
-import { UsersApiUrl } from "../api_links";
+import { UserContext } from "../components/UserContext";
 
 const Header = () => {
-    const [userData, setUserData] = useState<UserProps>();
-
-    useEffect(() => {
-        fetchUserData();
-    }, []);
-
-    const fetchUserData = async () => {
-        try {
-            const response = await fetch(`${UsersApiUrl}/1`);
-            const data = await response.json();
-            setUserData(data);
-            console.log(data);
-        } catch (error) {
-            console.error("fetch users error,", error);
-        }
-        
-    }
-
+    const userData = useContext<UserProps | undefined>(UserContext);
     return (
         <header>
             <p className="balance">Баланс <span>{userData?.points}</span> поинтов</p>
