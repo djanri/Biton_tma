@@ -12,7 +12,8 @@ builder.Services.AddCors(options =>
         builder.WithOrigins(
             "https://biton-tma.local:443", 
             "https://biton-tma.local",
-            "http://localhost")
+            "http://localhost",
+            "https://localhost")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
