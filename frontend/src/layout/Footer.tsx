@@ -1,5 +1,5 @@
-import { Outlet, useLocation, useNavigate } from "react-router";
-import PageUrl from "./PageUrl"
+import { useLocation, useNavigate } from "react-router";
+import PageUrl from "../components/PageUrl"
 
 const Footer = () => {
     const navigate = useNavigate();
@@ -14,17 +14,17 @@ const Footer = () => {
                 type="radio"
                 name="menu"
                 checked={location.pathname == PageUrl.User}
-                className="footer-item" />
+                className="footer-item user" />
             <input onChange={() => handleMouseEvent(PageUrl.Prizes)}
                 type="radio"
                 name="menu"
                 checked={location.pathname == PageUrl.Prizes}
-                className="footer-item"/>
+                className="footer-item prize"/>
             <input onChange={() => handleMouseEvent(PageUrl.Channels)}
                 type="radio"
                 name="menu"
                 checked={location.pathname == PageUrl.Channels}
-                className="footer-item"/>
+                className="footer-item channel"/>
       </footer>
     )
   }

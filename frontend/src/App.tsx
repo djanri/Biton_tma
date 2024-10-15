@@ -1,11 +1,9 @@
-import { useState } from 'react'
-import { BrowserRouter, createBrowserRouter, createRoutesFromElements, Route, RouterProvider, Routes } from 'react-router-dom'
-import Footer from './components/footer'
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import UserPage from './pages/UserPage'
 import PrizesPage from './pages/PrizesPage'
 import ChannelsPage from './pages/ChannelsPage'
 import PageUrl from './components/PageUrl'
-import Layout from './Layout'
+import Layout from './layout/Layout'
 
 const router = createBrowserRouter(
   createRoutesFromElements(

@@ -44,12 +44,42 @@ body {
       justify-content: center;
       align-items: center;
       color: white;
+      appearance: none;
+      background-position: center;
+      background-size: contain;
+      background-repeat: no-repeat;
+      margin: 0;
+      &.user {
+        background-image: url(./assets/user.png);
+      }
+      &.prize {
+        background-image: url(./assets/prize.png);
+      }
+      &.channel {
+        background-image: url(./assets/channel.png);
+      }
     }
     .footer-item:checked {
       background-color: #0271c0;
     }
   }
 
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0088cc;
+    height: 90px;
+    .balance {
+      text-align: center;
+      margin-bottom: 0;
+    }
+    .welcome {
+      margin-top: 0;
+      text-align: center;
+    }
+  }
 }
 
 h1 {
