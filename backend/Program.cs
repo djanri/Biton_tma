@@ -58,11 +58,21 @@ app.UseHttpsRedirection();
 
 var userItems = app.MapGroup("/users");
 userItems.MapGet("/{id}", UserService.GetUser);
-userItems.MapGet("/random", UserService.GetRandomUser);
-userItems.MapGet("/referals-count/{id}", UserService.GetReferalsCount);
 userItems.MapPost("/", UserService.CreateUser);
 userItems.MapPut("/{id}", UserService.UpdateUser);
 userItems.MapDelete("/{id}", UserService.DeleteUser);
+
+// userItems.MapGet("/with-prizes/{id}", UserService.GetUserWithPrizes);
+userItems.MapGet("/random", UserService.GetRandomUser);
+userItems.MapGet("/referals-count/{id}", UserService.GetReferalsCount);
+
+var prizeItems = app.MapGroup("/prizes");
+prizeItems.MapGet("/{id}", PrizeService.GetPrize);
+prizeItems.MapPost("/", PrizeService.CreatePrize);
+prizeItems.MapPut("/{id}", PrizeService.UpdatePrize);
+prizeItems.MapDelete("/{id}", PrizeService.DeletePrize);
+
+prizeItems.MapGet("/winner/{id}", PrizeService.GetPrizeByWinnerId);
 
 app.MapGet("/", () => "Hello World!");
 

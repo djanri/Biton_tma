@@ -14,5 +14,5 @@ public class Prize
 
     public required string ChannelName { get; set;}
 
-    public virtual User? Winner { get; set; }
+    public int? UserId {get; set;}
 }

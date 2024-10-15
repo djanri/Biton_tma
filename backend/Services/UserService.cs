@@ -10,20 +10,6 @@ public class UserService()
                     : TypedResults.NotFound();
     }
 
-    public static async Task<IResult> GetReferalsCount(int id, AppDBContext db)
-    {
-        var referalsCount =  await db.Users.CountAsync(us => us.ReferalId == id);
-        return TypedResults.Ok(referalsCount);
-    }
-
-    public static async Task<IResult> GetRandomUser(AppDBContext db)
-    {
-        return await db.Users.OrderBy(us => EF.Functions.Random()).FirstAsync()
-                is User user
-                    ? TypedResults.Ok(user)
-                    : TypedResults.NotFound();
-    }
-
     public static async Task<IResult> CreateUser(User user, AppDBContext db)
     {
         db.Users.Add(user);
@@ -57,5 +43,27 @@ public class UserService()
         }
 
         return TypedResults.NotFound();
+    }
+    
+    public static async Task<IResult> GetUserWithPrizes(int id, AppDBContext db)
+    {
+        return await db.Users.Include(u => u.Prizes).FirstOrDefaultAsync(u => u.Id == id)
+                is User user
+                    ? TypedResults.Ok(user)
+                    : TypedResults.NotFound();
+    }
+
+    public static async Task<IResult> GetReferalsCount(int id, AppDBContext db)
+    {
+        var referalsCount =  await db.Users.CountAsync(us => us.ReferalId == id);
+        return TypedResults.Ok(referalsCount);
+    }
+
+    public static async Task<IResult> GetRandomUser(AppDBContext db)
+    {
+        return await db.Users.OrderBy(us => EF.Functions.Random()).FirstAsync()
+                is User user
+                    ? TypedResults.Ok(user)
+                    : TypedResults.NotFound();
     }
 }
