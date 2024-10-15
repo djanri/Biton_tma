@@ -1,6 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 
+const string MyAllowSpecificOrigins = "forbitontmalocalhost";
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+    builder =>
+    {
+        builder.WithOrigins(
+            "https://biton-tma.local:443", 
+            "https://biton-tma.local",
+            "http://localhost")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDBContext>(options =>
@@ -34,6 +50,8 @@ if (app.Environment.IsDevelopment())
         config.DocExpansion = "list";
     });
 }
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseHttpsRedirection();
 
