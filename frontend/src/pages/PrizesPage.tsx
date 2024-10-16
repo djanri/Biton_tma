@@ -47,18 +47,18 @@ const PrizesPage = () => {
     }
   }
 
-    return (
-      <div className="list">
-        {prizeData?.map((prize, index) => (
-          <div className="item border" key={index}>
-            <p><b>{prize.name}</b></p>
-            <p>{prize.description}</p>
-            <p>Цена: {prize.cost} поинтов</p>
-            <button onClick={() => buyClick(prize)}>Купить</button>
-          </div>
-      ))}
-      </div>
-    )
-  }
-  
-  export default PrizesPage
+  return (
+    <div className="list">
+      {prizeData?.map((prize, index) => (
+        <div className="item border" key={index}>
+          <p><b>{prize.name}</b></p>
+          <p>{prize.description}</p>
+          <p>Цена: {prize.cost} поинтов</p>
+          <button onClick={() => buyClick(prize)}>Купить</button>
+        </div>
+    ))}
+    </div>
+  )
+}
+
+export default PrizesPage
