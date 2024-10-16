@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 public class ChannelService()
 {
     public static async Task<IResult> GetChannel(int id, AppDBContext db)
@@ -39,5 +41,12 @@ public class ChannelService()
         }
 
         return TypedResults.NotFound();
+    }
+
+    
+    public static async Task<IResult> GetChannels(AppDBContext db)
+    {
+        var channels = await db.Channels.ToListAsync();
+        return TypedResults.Ok(channels);
     }
 }

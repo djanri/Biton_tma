@@ -88,6 +88,8 @@ chnnelItems.MapPost("/", ChannelService.CreateChannel);
 chnnelItems.MapPut("/{id}", ChannelService.UpdateChannel);
 chnnelItems.MapDelete("/{id}", ChannelService.DeleteChannel);
 
+chnnelItems.MapGet("/", ChannelService.GetChannels);
+
 
 app.MapGet("/", () => "Hello World!");
 
