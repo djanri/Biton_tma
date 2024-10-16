@@ -75,6 +75,20 @@ prizeItems.MapDelete("/{id}", PrizeService.DeletePrize);
 prizeItems.MapGet("/winner/{id}", PrizeService.GetPrizeByWinnerId);
 prizeItems.MapGet("/active", PrizeService.GetPrizeActive);
 
+var adminItems = app.MapGroup("/admins");
+adminItems.MapGet("/{id}", AdminService.GetAdmin);
+adminItems.MapPost("/", AdminService.CreateAdmin);
+adminItems.MapPut("/{id}", AdminService.UpdateAdmin);
+adminItems.MapDelete("/{id}", AdminService.DeleteAdmin);
+
+
+var chnnelItems = app.MapGroup("/channels");
+chnnelItems.MapGet("/{id}", ChannelService.GetChannel);
+chnnelItems.MapPost("/", ChannelService.CreateChannel);
+chnnelItems.MapPut("/{id}", ChannelService.UpdateChannel);
+chnnelItems.MapDelete("/{id}", ChannelService.DeleteChannel);
+
+
 app.MapGet("/", () => "Hello World!");
 
 app.Run();
