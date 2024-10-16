@@ -4,6 +4,7 @@ interface PrizeProps {
     description: string
     channelUrl: string
     channelName: string
+    cost: number
     userId: number
 }
 export default PrizeProps;

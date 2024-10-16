@@ -5,6 +5,7 @@ import { PrizesApiUrl } from "../api_links";
 const UserPage = () => {
   const [prizeData, setPrizeData] = useState<PrizeProps[]>();
   let isIgnore = false;
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
