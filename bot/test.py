@@ -358,6 +358,7 @@ async def Prof(callback_query: types.CallbackQuery):
 
 @dp.callback_query_handler(lambda query: query.data == 'back')
 async def Back(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
     await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id)
     await bot.send_message(callback_query.from_user.id, "Главное меню", reply_markup=krb.create_keyboard(user_id))
 
