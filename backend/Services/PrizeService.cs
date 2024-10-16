@@ -55,4 +55,10 @@ public class PrizeService()
         return TypedResults.Ok(prizes);
     }
 
+    public static async Task<IResult> GetPrizeActive(AppDBContext db)
+    {
+        var prizes = await db.Prizes.Where(p => p.UserId == null).ToListAsync();
+        return TypedResults.Ok(prizes);
+    }
+
 }

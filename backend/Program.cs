@@ -73,6 +73,7 @@ prizeItems.MapPut("/{id}", PrizeService.UpdatePrize);
 prizeItems.MapDelete("/{id}", PrizeService.DeletePrize);
 
 prizeItems.MapGet("/winner/{id}", PrizeService.GetPrizeByWinnerId);
+prizeItems.MapGet("/active", PrizeService.GetPrizeActive);
 
 app.MapGet("/", () => "Hello World!");
 
