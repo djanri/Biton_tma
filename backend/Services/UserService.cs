@@ -44,14 +44,6 @@ public class UserService()
 
         return TypedResults.NotFound();
     }
-    
-    public static async Task<IResult> GetUserWithPrizes(int id, AppDBContext db)
-    {
-        return await db.Users.Include(u => u.Prizes).FirstOrDefaultAsync(u => u.Id == id)
-                is User user
-                    ? TypedResults.Ok(user)
-                    : TypedResults.NotFound();
-    }
 
     public static async Task<IResult> GetReferalsCount(int id, AppDBContext db)
     {
@@ -66,4 +58,13 @@ public class UserService()
                     ? TypedResults.Ok(user)
                     : TypedResults.NotFound();
     }
+
+    public static async Task<IResult> GetUserByUserId(int id, AppDBContext db)
+    {
+        return await db.Users.FirstOrDefaultAsync(us => us.UserId == id)
+                is User user
+                    ? TypedResults.Ok(user)
+                    : TypedResults.NotFound();
+    }
+
 }

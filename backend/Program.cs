@@ -62,7 +62,7 @@ userItems.MapPost("/", UserService.CreateUser);
 userItems.MapPut("/{id}", UserService.UpdateUser);
 userItems.MapDelete("/{id}", UserService.DeleteUser);
 
-// userItems.MapGet("/with-prizes/{id}", UserService.GetUserWithPrizes);
+userItems.MapGet("/userid/{id}", UserService.GetUserByUserId);
 userItems.MapGet("/random", UserService.GetRandomUser);
 userItems.MapGet("/referals-count/{id}", UserService.GetReferalsCount);
 
