@@ -25,16 +25,22 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  /* place-items: center; */
   min-width: 320px;
   min-height: 100vh;
   
+  div {
+    display: flex;
+  }
+
+  #root {
+    flex-direction: column;
+    width: 100%;
+  }
+
   footer {
     display: flex;
     justify-content: space-around;
-    position: fixed;
-    left: 0;
-    bottom: 0;
     height: 100px;
     width: 100%;
     background-color: #0088cc;
@@ -65,9 +71,8 @@ body {
   }
 
   header {
-    position: fixed;
-    top: 0;
-    left: 0;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     background-color: #0088cc;
     height: 90px;
@@ -78,6 +83,16 @@ body {
     .welcome {
       margin-top: 0;
       text-align: center;
+    }
+  }
+
+  .list {
+    overflow-y: auto;
+    flex: 1 1 auto;
+    height: 0px;
+    flex-direction: column;
+    .item {
+      align-self: center;
     }
   }
 }

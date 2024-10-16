@@ -24,13 +24,11 @@ const UserPage = () => {
 
 
   return (
-    <>
-      <div>History</div>
+    <div className="list">
       {prizeData?.map((prize, index) => (
-        
-        <p key={index}>{prize.name}</p>
+        <p className="item" key={index}>{prize.name}</p>
       ))}
-    </>
+    </div>
   )
 }
 
