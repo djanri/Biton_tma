@@ -84,6 +84,12 @@ class NewOrder(StatesGroup):
     price = State()
     photo = State()
 
+class NewOrder1(StatesGroup):
+    user_id = State()
+    user_name = State()
+    chanel_url = State()
+
+
 class CancelOrder(StatesGroup):
     cancel = State()
 
@@ -95,11 +101,6 @@ def chek_chanel(chat_member):
     else:
         return False
 
-def creater(chat_member):
-    if chat_member['status'] == "creator":
-        return True
-    else:
-        return False
 
 
 # Хэндлеры
@@ -141,7 +142,7 @@ async def start(message: types.Message):
 
 @dp.message_handler(commands=['admin'])
 async def start(message: types.Message):
-    if creater(await bot.get_chat_member(chat_id=Chanel_id, user_id=message.from_user.id)):
+    if message.chat.id in []:
         await message.answer("Успешный вход в админ панель✅")
         await message.answer("Чтобы добавить приз нажмите на сит фразу /admin_1_get_users\nЧтобы вернуться в меню /start")
     else:
@@ -354,39 +355,35 @@ async def Back(callback_query: types.CallbackQuery):
 @dp.callback_query_handler(lambda query: query.data == 'add')
 async def More(callback_query: types.CallbackQuery):
     # Сначала просим ввести Username
-    await bot.send_message(callback_query.from_user.id, "Введите Username", reply_markup=krb.Back)
-    await asyncio.sleep(2)
-
-    # Просим ввести User_ID
     await bot.send_message(callback_query.from_user.id, "Введите User_ID", reply_markup=krb.Back)
-    await asyncio.sleep(2)
+    await NewOrder1.next()
 
-    @dp.message_handler(content_types=types.ContentTypes.TEXT)
-    async def handle_channel_link(message: types.Message):
-        channel_link = message.text
+@dp.message_handler(state=NewOrder1.user_id)
+async def start_id(message: types.Message, state: FSMContext):
+    if message.text==isinstance(int):
+        async with state.proxy() as data:
+                data['user_id'] = message.text
+        await message.answer("Введите User_Name", reply_markup=krb.cancel_keyboard())
+        await NewOrder1.next()
+    else:
+        await message.answer("Вы ввели не user_id . Нажмите кнопку отмена и попробуйте снова", reply_markup=krb.cancel_keyboard())
 
-        if not channel_link:
-            await message.answer("Пожалуйста, пришлите ссылку на канал.")
-            return
+@dp.message_handler(state=NewOrder1.user_name)
+async def start_names(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['user_name'] = message.text
+    await message.answer("Отправьте ссылку на канал", reply_markup=krb.cancel_keyboard())
+    await NewOrder1.next()
 
-        try:
-            # Получаем информацию о канале по ссылке
-            chat = await bot.get_chat(channel_link)
+@dp.message_handler(state=NewOrder1.chanel_url)
+async def start_names(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['chanel_url'] = message.text
+    await message.answer("Успешно Добавлено!", reply_markup=krb.cancel_keyboard())
+    await NewOrder1.next()
+#     здесь отправка данных в бд
 
-            # Проверяем, состоит ли пользователь в канале
-            user_id = message.from_user.id
-            chat_member = await bot.get_chat_member(chat_id=chat.id, user_id=user_id)
 
-            if chat_member.status != 'left':
-                await message.answer(f"Вы подписаны на канал {chat.title}!")
-            else:
-                await message.answer(f"Вы не подписаны на канал {chat.title}.")
-        except ChatNotFound:
-            await message.answer("Канал не найден. Убедитесь, что ссылка правильная и бот имеет доступ.")
-        except BadRequest:
-            await message.answer("Ошибка. Возможно, бот не имеет доступа к этому каналу.")
-        except Exception as e:
-            await message.answer(f"Произошла ошибка: {e}")
 
 @dp.callback_query_handler(lambda query: query.data == 'remove')
 async def More(callback_query: types.CallbackQuery):
