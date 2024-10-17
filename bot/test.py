@@ -1,4 +1,6 @@
 import asyncio
+
+from ApiClient import ApiClient
 from reaktion import reaction
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types.web_app_info import WebAppInfo
@@ -62,6 +64,7 @@ storage = MemoryStorage()
 # Закомментировано взаимодействие с базой данных
 # db_path = os.path.join('database', 'users.db')
 # db1 = DataBase(db_path)
+apiClient = ApiClient()
 
 async def check_subscriptions(user_id, channel_ids):
     subscriptions = []
@@ -101,44 +104,38 @@ def creater(chat_member):
 # Хэндлеры
 @dp.message_handler(commands=['start'])
 async def start(message: types.Message):
-    # global user_id
-    # user_id = message.from_user.id  # Получаем user_id из сообщения
-    # user_name = message.from_user.first_name
-    # user_last_name = message.from_user.last_name
-    # full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
-    #
-    # chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=message.from_user.id)
-    # if chek_chanel(chat_member):
-    #     if not db1.user_exists(message.from_user.id):
-    #         start_command = message.text
-    #         referer_id = str(start_command[7:])  # Предполагается, что ссылка начинается с '/start '
-    #         if referer_id != "":
-    #             if referer_id != str(message.from_user.id):
-    #                 db1.add_user(message.from_user.id, referer_id)
-    #                 await bot.send_message(referer_id, "По вашей ссылке зарегистрировался новый пользователь")
-    #             else:
-    #                 db1.add_user(message.from_user.id)
-    #                 await bot.send_message(message.from_user.id,
-    #                                        "Нельзя регистрировать по собственной реферальной ссылке!")
-    #         else:
-    #             db1.add_user(message.from_user.id)
-    #     await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!',
-    #                          reply_markup=krb.create_keyboard(user_id))
-    # else:
-    #     await bot.send_message(message.from_user.id, Not_Sub_Message, reply_markup=krb.My_Chanel)
-    #
     global user_id
-    user_id = message.from_user.id
+    user_id = message.from_user.id  # Получаем user_id из сообщения
     user_name = message.from_user.first_name
     user_last_name = message.from_user.last_name
     full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
-
+    print(f"user_id: {user_id}")
     chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=message.from_user.id)
+    if chek_chanel(chat_member):
+        if not apiClient.user_exists(user_id):
+            start_command = message.text
+            referer_id = str(start_command[7:])  # Предполагается, что ссылка начинается с '/start '
+            if referer_id != "":
+                if referer_id != str(message.from_user.id):
+                    apiClient.add_user(user_id, full_name, referer_id)
+                    await bot.send_message(referer_id, "По вашей ссылке зарегистрировался новый пользователь")
+                else:
+                    apiClient.add_user(user_id, full_name)
+                    await bot.send_message(message.from_user.id,
+                                           "Нельзя регистрировать по собственной реферальной ссылке!")
+            else:
+                apiClient.add_user(user_id, full_name, "")
+        await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!',
+                             reply_markup=krb.create_keyboard(user_id))
+    else:
+        await bot.send_message(user_id, Not_Sub_Message, reply_markup=krb.My_Chanel)
+
+    chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=user_id)
     if chek_chanel(chat_member):
         # Логика взаимодействия с базой данных убрана
         await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!', reply_markup=krb.create_keyboard(user_id))
     else:
-        await bot.send_message(message.from_user.id, Not_Sub_Message, reply_markup=krb.My_Chanel)
+        await bot.send_message(user_id, Not_Sub_Message, reply_markup=krb.My_Chanel)
 
 @dp.message_handler(commands=['admin'])
 async def start(message: types.Message):
