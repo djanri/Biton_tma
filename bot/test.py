@@ -1,4 +1,6 @@
 import asyncio
+
+from ApiClient import ApiClient
 from reaktion import reaction
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.types.web_app_info import WebAppInfo
@@ -27,6 +29,7 @@ import aiohttp
 
 
 BOT_TOKEN = '7061940889:AAHwuc8VIAg2CPAQAel9g-XdJR9Lo8_X4mc'
+
 
 # Функция для добавления плохих слов
 def load_bad_words(url):
@@ -136,6 +139,7 @@ async def start(message: types.Message):
     chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=message.from_user.id)
     if chek_chanel(chat_member):
         # Логика взаимодействия с базой данных убрана
+        # api_client.add_user(user_id=user_id, user_name=full_name)
         await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!', reply_markup=krb.create_keyboard(user_id))
     else:
         await bot.send_message(message.from_user.id, Not_Sub_Message, reply_markup=krb.My_Chanel)

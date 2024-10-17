@@ -1,7 +1,7 @@
 import requests
 
 class ApiClient:
-    api_url = "https://localhost:7000"
+    api_url = "https://localhost:3000"
     users_url = "/users"
 
     def user_exists(self, user_id):
