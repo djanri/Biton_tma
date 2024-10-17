@@ -330,26 +330,15 @@ async def More(callback_query: types.CallbackQuery):
 # реферальная система
 @dp.callback_query_handler(lambda query: query.data == 'profile')
 async def Prof(callback_query: types.CallbackQuery):
-    # await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id)
-    # if callback_query.message.chat.type == 'private':
-    #     user_name = callback_query.from_user.first_name
-    #     user_last_name = callback_query.from_user.last_name
-    #     user_id = callback_query.from_user.id
-    #     referals_count = db1.count_referals(user_id)  # предполагается, что функция принимает user_id
-    #     full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
-    #     await bot.send_message(callback_query.from_user.id,
-    #                            f'👤 {full_name}\n\nВаш ID: {callback_query.from_user.id}\nВаша реферальная ссылка 🎁: https://t.me/{cf.BOT_NAME}?start={callback_query.from_user.id}\n\nКол-во рефералов: {referals_count}',
-    #                            reply_markup=krb.Back)
-
     await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id)
     if callback_query.message.chat.type == 'private':
         user_name = callback_query.from_user.first_name
         user_last_name = callback_query.from_user.last_name
         user_id = callback_query.from_user.id
-        # referals_count = db1.count_referals(user_id)  # предполагается, что функция принимает user_id
+        referals_count = apiClient.count_referals(user_id)  # предполагается, что функция принимает user_id
         full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
-        await bot.send_message(callback_query.from_user.id,
-                               f'👤 {full_name}\n\nВаш ID: {callback_query.from_user.id}\nВаша реферальная ссылка 🎁: https://t.me/{cf.BOT_NAME}?start={callback_query.from_user.id}\n\nКол-во рефералов: referals_count',
+        await bot.send_message(user_id,
+                               f'👤 {full_name}\n\nВаш ID: {user_id}\nВаша реферальная ссылка 🎁: https://t.me/{cf.BOT_NAME}?start={user_id}\n\nКол-во рефералов: {referals_count}',
                                reply_markup=krb.Back)
 
 

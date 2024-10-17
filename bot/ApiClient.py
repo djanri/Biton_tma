@@ -15,7 +15,6 @@ class ApiClient:
     )
 
     def user_exists(self, user_id):
-        print(socket.gethostbyname(socket.gethostname()))
         response = self.http.request("GET", f'{self.users_url}/userid/{user_id}')
         result = False
         if response.status == 200:
@@ -42,7 +41,15 @@ class ApiClient:
             print(f"Ошибка при POST-запросе: {response.status}")
 
     def count_referals(self, user_id):
-        print("adding user")
+        response = self.http.request("GET", f'{self.users_url}/referals-count/{user_id}')
+        result : int = 0
+        if response.status == 200:
+            print("GET-запрос успешно выполнен!")
+            print(response.json())
+            result = int(response.json())
+        else:
+            print(f"Ошибка при GET-запросе: {response.status}")
+        return result
     
     def get_user_score(self, user_id):
         print("adding user")
