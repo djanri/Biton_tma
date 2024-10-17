@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+
+  <title>Главная</title>
+</head>
+
+<body> 
+
+  <div class="container">
+    <div class="card-weather">
+
+      
+
+      <div class="card-weather-main">
+        <br>
+        <h3 class="city">Мой баланс:</h3>
+        <h1>0</h1>
+        
+        <div class="description">Привет, Name</div>
+        <div class="feel">моя история покупок</div>
+        
+        
+<!-- Блок с ошибкой -->
+<div class="warning">
+    <h3>Error⛔</h3>
+  <p class="warning-message">
+   Обратитесь к администратору
+  </p>
+</div>
+</div>
+
+<div class="subtitle">
+<div class="block">
+</div>
+<div class="block">
+</div>
+<div class="block">
+</div>
+<div class="block">
+</div>
+</div>
+
+<div id="info-panel" class="info-panel"></div>
+
+<div class="card-weather-other">
+<div class="card-day">
+  <div class="card-day-text">
+    <p class="date">--- -</p>
+    <p class="week-day">-----</p>
+  </div>
+  <div class="card-day-img">-</div>
+  <div class="card-day-celsius"><span class="day-celsius">-</span></div>
+</div>
+<div class="card-day">
+    <div class="card-day-text">
+      <p class="date">--- -</p>
+      <p class="week-day">-----</p>
+    </div>
+    <div class="card-day-img">-</div>
+    <div class="card-day-celsius"><span class="day-celsius">-</span></div>
+  </div>
+  <div class="card-day">
+    <div class="card-day-text">
+      <p class="date">--- -</p>
+      <p class="week-day">-----</p>
+    </div>
+    <div class="card-day-img">-</div>
+    <div class="card-day-celsius"><span class="day-celsius">-</span></div>
+  </div>
+  <div class="card-day">
+    <div class="card-day-text">
+      <p class="date">--- -</p>
+      <p class="week-day">-----</p>
+    </div>
+    <div class="card-day-img">-</div>
+    <div class="card-day-celsius"><span class="day-celsius">-</span></div>
+  </div>
+  <div class="card-day">
+    <div class="card-day-text">
+      <p class="date">--- -</p>
+      <p class="week-day">-----</p>
+    </div>
+    <div class="card-day-img">-</div>
+    <div class="card-day-celsius"><span class="day-celsius">-</span></div>
+  </div>
+<div class="card-day">
+  <div class="card-day-text">
+    <p class="date">--- -</p>
+    <p class="week-day">-----</p>
+  </div>
+  <div class="card-day-img">-</div>
+  <div class="card-day-celsius"><span class="day-celsius">-</span></div>
+</div>
+<div class="card-day">
+  <div class="card-day-text">
+    <p class="date">--- -</p>
+    <p class="week-day">-----</p>
+  </div>
+  
+  <div class="card-day-img">-</div>
+  <div class="card-day-celsius"><span class="day-celsius">-</span></div>
+</div>
+</div>
+
+</div>
+
+<div class="loading">
+<div class="load-wrapper">
+<div class="cssload-loader">
+  <div class="cssload-inner cssload-one"></div>
+  <div class="cssload-inner cssload-two"></div>
+  <div class="cssload-inner cssload-three"></div>
+</div>
+</div>
+</div>
+
+<!-- Овальная кнопка Выйти -->
+<div class="button-row">
+    <button class="oval-button" onclick="openMain()">Профиль</button>
+    <button class="oval-button" onclick="openPriz()">Призы 🪙</button>
+    <button class="oval-button" onclick="openChanel()">Больше баллов</button>
+  </div>
+
+</div>
+
+<script src="js/skycons.js"></script>
+<script src="js/App.js"></script>
+
+  <!-- Добавление стилей для картинки ошибки -->
+  <style>
+    .error-icon {
+      width: 30px;
+      height: 30px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+  </style>
+
+</body>
+
+</html>
+<style>
+    .button-row {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.oval-button {
+  background-color: #18a1da;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.oval-button:hover {
+  background-color: #4244ca;
+}
+    .container .card-weather {
+  text-align: center;
+  max-width: 450px;
+  margin: 0 auto;
+  display: grid;
+  grid-gap: 10px;
+  padding: 10px;
+}
+.container .card-weather .header {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr 10fr 1fr;
+}
+.container .card-weather .header .favorite,
+.container .card-weather .header .get {
+  border: none;
+  background: none;
+}
+.container .card-weather .header .favorite img,
+.container .card-weather .header .get img {
+  width: 100%;
+}
+.container .card-weather .header .favorite:active,
+.container .card-weather .header .get:active {
+  outline: none;
+}
+.container .card-weather .header input {
+  border-radius: 10px;
+  padding: 0 10px;
+  border-color: royalblue;
+}
+.container .card-weather .header input:focus {
+  outline: none;
+}
+.container .card-weather-main {
+  background: -webkit-gradient(linear, left top, left bottom, from(#18a1da), to(#2886d8));
+  background: linear-gradient(180deg, #18a1da, #2886d8);
+  color: white;
+  display: grid;
+  grid-gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  position: relative;
+}
+.container .card-weather-main .city {
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0px;
+}
+.container .card-weather-main .wrapper-cel-img {
+  font-size: 40px;
+  font-weight: 700;
+  width: 50%;
+  margin: 0 auto;
+  display: grid;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  grid-template-columns: 1fr 1fr;
+}
+.container .card-weather-main .wrapper-cel-img .grid-child {
+  justify-self: center;
+}
+.container .card-weather-main .description {
+  font-weight: 700;
+  font-size: 20px;
+}
+.container .card-weather-main .feel {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 20px;
+  font-weight: 500;
+}
+.container .card-weather-main .warning {
+  display: none;
+  width: 100%;
+  padding: 40px;
+  background: #eb1f48;
+  position: absolute;
+  font-size: 20px;
+  font-weight: 500;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+.container .card-weather .subtitle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+}
+.container .card-weather .subtitle .block {
+  display: grid;
+  justify-items: center;
+}
+.container .card-weather .subtitle .block img {
+  width: 40px;
+}
+.container .card-weather .subtitle .block span {
+  font-weight: 500;
+  font-size: 14px;
+}
+.container .card-weather-other {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  font-weight: 600;
+  border-radius: 10px;
+  overflow: hidden;
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2);
+}
+.container .card-weather-other .card-day {
+  border-bottom: 2px solid #18a1da;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+}
+.container .card-weather-other .card-day:last-child {
+  border: none;
+}
+.container .card-weather-other .card-day p {
+  text-align: left;
+  margin: 0;
+}
+.container .card-weather-other .card-day-text .date {
+  color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+}
+.container .card-weather-other .card-day-text .week-day {
+  font-weight: 700;
+  font-size: 20px;
+}
+.container .card-weather-other .card-day-celsius {
+  text-align: right;
+  font-size: 25px;
+  font-weight: 700;
+}
+.loading {
+  background: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  height: 100%;
+  top: 0;
+  right: 0;
+  width: 100%;
+  display: none;
+}
+.loading .load-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(10px) translateY(-50%);
+          transform: translateX(10px) translateY(-50%);
+}
+.cssload-loader {
+  position: relative;
+  left: calc(-58%);
+  width: 216px;
+  height: 216px;
+  border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-perspective: 2700px;
+          perspective: 2700px;
+}
+.cssload-inner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+.cssload-inner.cssload-one {
+  left: 0%;
+  top: 0%;
+  animation: cssload-rotate-one 0.95s linear infinite;
+  -o-animation: cssload-rotate-one 0.95s linear infinite;
+  -ms-animation: cssload-rotate-one 0.95s linear infinite;
+  -webkit-animation: cssload-rotate-one 0.95s linear infinite;
+  -moz-animation: cssload-rotate-one 0.95s linear infinite;
+  border-bottom: 10px solid #22a0da;
+}
+.cssload-inner.cssload-two {
+  right: 0%;
+  top: 0%;
+  animation: cssload-rotate-two 0.95s linear infinite;
+  -o-animation: cssload-rotate-two 0.95s linear infinite;
+  -ms-animation: cssload-rotate-two 0.95s linear infinite;
+  -webkit-animation: cssload-rotate-two 0.95s linear infinite;
+  -moz-animation: cssload-rotate-two 0.95s linear infinite;
+  border-right: 10px solid #22a0da;
+}
+.cssload-inner.cssload-three {
+  right: 0%;
+  bottom: 0%;
+  animation: cssload-rotate-three 0.95s linear infinite;
+  -o-animation: cssload-rotate-three 0.95s linear infinite;
+  -ms-animation: cssload-rotate-three 0.95s linear infinite;
+  -webkit-animation: cssload-rotate-three 0.95s linear infinite;
+  -moz-animation: cssload-rotate-three 0.95s linear infinite;
+  border-top: 10px solid #239fd9;
+}
+@keyframes cssload-rotate-one {
+  0% {
+    -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+            transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+            transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+  }
+}
+@-webkit-keyframes cssload-rotate-one {
+  0% {
+    -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg);
+  }
+}
+@keyframes cssload-rotate-two {
+  0% {
+    -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+            transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+            transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+  }
+}
+@-webkit-keyframes cssload-rotate-two {
+  0% {
+    -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg);
+  }
+}
+@keyframes cssload-rotate-three {
+  0% {
+    -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+            transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+            transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+  }
+}
+@-webkit-keyframes cssload-rotate-three {
+  0% {
+    -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg);
+  }
+  100% {
+    -webkit-transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg);
+  }
+}
+.theme-button {
+    background-color: #2e2e2e;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.theme-button:hover {
+  background-color: #ccc;
+}
+
+body.dark-theme {
+  background-color: #2e2e2e;
+  color: #fff;
+}
+
+body.dark-theme .theme-button {
+  background-color: #444;
+  color: #fff;
+}
+.hidden {
+  display: none;
+}
+
+.tooltip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 1000;
+  width: 80%;
+  max-width: 300px;
+}
+
+.tooltip p {
+  margin: 0;
+  padding: 10px 0;
+}
+
+.close-button {
+  background-color: #5f7deb;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.exit-container {
+  position: fixed;
+  top: 95%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.exit-button {
+  background-color: #5c7aff;
+  color: white;
+  border: none;
+  padding: 10px 40px;
+  border-radius: 50px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.exit-button:hover {
+  background-color: #4244ca;
+}
+
+</style>
+
+<script>
+     function openPriz() {
+                    window.location.href='priz.html';
+                }
+
+                function openMain() {
+                    window.location.href='main.html';
+                }
+                function openChanel() {
+                    window.location.href='chanel.html';
+                }
+</script>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="img/icon.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <title>Призы</title>
+</head>
+
+<body>
+  <div class="container">
+    <!-- Верхний синий блок с заголовком -->
+    <div class="card-prizes-header">
+      <h3>получи больше баллов!</h3>
+    </div>
+
+    <!-- Блоки призов -->
+    <div class="prize-block">
+      <div class="prize-item">
+        <div class="prize-description">
+          <p>BiTry - канал разработчиков</p>
+          <br>
+          <button class="buy-button" onclick="subscribeToBiTry()">Подписаться</button>
+        </div>
+      </div>
+
+      <div class="prize-item">
+        <div class="prize-description">
+            <p>Канал 2</p>
+            <br>
+            <button class="buy-button">Подписаться</button>
+        </div>
+      </div>
+
+      <div class="prize-item">
+        <div class="prize-description">
+            <p>Канал 3</p>
+            <br>
+            <button class="buy-button">Подписаться</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Овальные кнопки внизу страницы -->
+    <div class="button-row-fixed">
+        <button class="oval-button" onclick="openMain()">Профиль</button>
+        <button class="oval-button" onclick="openPriz()">Призы 🪙</button>
+        <button class="oval-button" onclick="openChanel()">Больше баллов</button>
+    </div>
+  </div>
+
+  <script>
+    function openMain() {
+      window.location.href='main.html';
+    }
+
+    function subscribeToBiTry() {
+      // Перенаправление на Telegram-канал
+      window.open('https://t.me/bitry_news', '_blank');
+    }
+  </script>
+<style>
+    /* Общий контейнер */
+.container {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+/* Верхний синий блок */
+.card-prizes-header {
+  background-color: #18a1da;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Увеличение и жирный текст заголовка */
+.card-prizes-header h3 {
+  font-size: 25px; /* увеличили размер */
+  font-weight: bold; /* сделали жирным */
+  margin: 0;
+}
+
+/* Блоки призов */
+.prize-block {
+  display: grid;
+  gap: 20px;
+}
+
+.prize-item {
+  display: flex;
+  background-color: #f0f0f0;
+  border-radius: 30px;
+  padding: 20px;
+  align-items: center;
+}
+
+.prize-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.prize-description {
+  margin-left: 20px;
+  text-align: left;
+}
+
+.prize-description h4 {
+  margin: 0;
+}
+
+.prize-description p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.prize-description span {
+  font-size: 14px;
+  color: #555;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* Кнопка купить */
+.buy-button {
+  background-color: #18a1da;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.buy-button:hover {
+  background-color: #4244ca;
+}
+
+/* Фиксированные кнопки внизу */
+.button-row-fixed {
+  display: flex;
+  position: fixed;
+  gap: 20px;
+  bottom: 10px;
+  width: 100%;
+  padding-bottom: 10px;
+  margin-top: 60px;
+  
+}
+
+.oval-button {
+  background-color: #18a1da;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
+}
+
+.oval-button:hover {
+  background-color: #4244ca;
+}
+
+</style>
+<script>
+    function openPriz() {
+                    window.location.href='priz.html';
+                }
+
+                function openMain() {
+                    window.location.href='main.html';
+                }
+                function openChanel() {
+                    window.location.href='chanel.html';
+                }
+</script>
