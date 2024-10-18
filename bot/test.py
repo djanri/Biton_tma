@@ -177,44 +177,6 @@ user_comments = defaultdict(list)
 
 @dp.message_handler(content_types=types.ContentTypes.TEXT)
 async def handle_message(message: types.Message):
-    # user_name = message.from_user.first_name
-    # user_last_name = message.from_user.last_name
-    # full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
-    #
-    # if message.chat.type == 'supergroup':
-    #     user_id = message.from_user.id
-    #     message_text = message.text.lower()
-    #
-    #     # Получаем текущее количество баллов пользователя
-    #     current_score = db1.get_user_score(user_id)
-    #     if current_score is None:
-    #         current_score = 0
-    #
-    #     # Проверяем время и количество комментариев
-    #     current_time = time.time()  # Текущее время в секундах с момента начала эпохи
-    #     user_comments[user_id] = [timestamp for timestamp in user_comments[user_id] if
-    #                               current_time - timestamp <= 5 * 3600]  # Оставляем только комментарии за последние 5 часов
-    #
-    #     if len(user_comments[user_id]) < 3:
-    #         # Начисляем балл, если комментариев меньше 3 за 5 часов
-    #         db1.update_user_score(user_id, 1)
-    #         current_score += 1
-    #         user_comments[user_id].append(current_time)  # Добавляем текущее время в список
-    #
-    #         await message.answer(f'{full_name}, Ваши баллы: {current_score}')
-    #     else:
-    #         # Если пользователь достиг лимита, предупреждаем его
-    #         await message.answer(
-    #             f'{full_name}, вы достигли лимита в 3 комментария за 5 часов. Остальные комментарии не будут начислены баллы.')
-    #
-    #     # Проверяем на наличие плохих слов
-    #     if message_text in (".", "плохо", "xxx", "ХУЙ"):
-    #         # current_score -= 1
-    #         await message.delete()  # Удаляем плохое сообщение
-    #         await message.answer(
-    #             f'{full_name}, в Вашем комментарии обнаружено негативное слово!\nСообщение было удалено. Ваши баллы: {current_score}')
-
-
     user_name = message.from_user.first_name
     user_last_name = message.from_user.last_name
     full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
@@ -223,24 +185,37 @@ async def handle_message(message: types.Message):
         user_id = message.from_user.id
         message_text = message.text.lower()
 
-        # Логика взаимодействия с базой данных убрана
-        current_score = user_data[user_id]['points']
+        # Получаем текущее количество баллов пользователя
+        user = apiClient.get_user(user_id)
+        current_score = user['points']
+        if current_score is None:
+            current_score = 0
 
-        current_time = time.time()
-        user_comments[user_id] = [timestamp for timestamp in user_comments[user_id] if current_time - timestamp <= 5 * 3600]
+        # Проверяем время и количество комментариев
+        current_time = time.time()  # Текущее время в секундах с момента начала эпохи
+        user_comments[user_id] = [timestamp for timestamp in user_comments[user_id] if
+                                  current_time - timestamp <= 5 * 3600]  # Оставляем только комментарии за последние 5 часов
 
         if len(user_comments[user_id]) < 3:
-            user_data[user_id]['points'] += 1
-            current_score += 1
-            user_comments[user_id].append(current_time)
-
-            await message.answer(f'{full_name}, Ваши баллы: {current_score}')
+            # Начисляем балл, если комментариев меньше 3 за 5 часов
+            user['points'] += 1
+            if apiClient.update_user(user_id, user):
+                current_score += 1
+                user_comments[user_id].append(current_time)  # Добавляем текущее время в список
+                await message.answer(f'{full_name}, Ваши баллы: {current_score}')
+            else:
+                await message.answer(f'{full_name}, Ошибка обновления баллов')
         else:
-            await message.answer(f'{full_name}, вы достигли лимита в 3 комментария за 5 часов.')
+            # Если пользователь достиг лимита, предупреждаем его
+            await message.answer(
+                f'{full_name}, вы достигли лимита в 3 комментария за 5 часов. Остальные комментарии не будут начислены баллы.')
 
-        if message_text in bad_words:
-            await message.delete()
-            await message.answer(f'{full_name}, в Вашем комментарии обнаружено негативное слово!\nСообщение было удалено. Ваши баллы: {current_score}')
+        # Проверяем на наличие плохих слов
+        if message_text in (".", "плохо", "xxx", "ХУЙ"):
+            # current_score -= 1
+            await message.delete()  # Удаляем плохое сообщение
+            await message.answer(
+                f'{full_name}, в Вашем комментарии обнаружено негативное слово!\nСообщение было удалено. Ваши баллы: {current_score}')
 
 
 @dp.message_handler(state=NewOrder.name)

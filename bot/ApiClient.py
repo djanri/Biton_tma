@@ -23,7 +23,6 @@ class ApiClient:
         result = False
         if response.status == 200:
             print("GET-запрос успешно выполнен!")
-            print(response.json())
             result = True
         else:
             print(f"Ошибка при GET-запросе: {response.status}")
@@ -44,22 +43,37 @@ class ApiClient:
             print(f"Ошибка при POST-запросе: {response.status}")
 
     def count_referals(self, user_id):
+        print("get referals count")
         response = self.http.request("GET", f'{self.users_url}/referals-count/{user_id}')
         result : int = 0
         if response.status == 200:
             print("GET-запрос успешно выполнен!")
-            print(response.json())
             result = int(response.json())
         else:
             print(f"Ошибка при GET-запросе: {response.status}")
         return result
     
-    def get_user_score(self, user_id):
-        print("adding user")
-        # return result[0] if result else 0
+    def get_user(self, user_id):
+        print("get user")
+        response = self.http.request("GET", f'{self.users_url}/{user_id}')
+        user = None
+        if response.status == 200:
+            print("GET-запрос успешно выполнен!")
+            user = response.json()
+        else:
+            print(f"Ошибка при GET-запросе: {response.status}")
+        return user
 
-    def update_user_score(self, user_id, points):
-        print("adding user")
+    def update_user(self, user_id, user_data):
+        print("update user")
+        response = self.http.request("PUT", f'{self.users_url}/{user_id}', json = user_data)
+        result = False
+        if response.status == 204:
+            print("GET-запрос успешно выполнен!")
+            result = True
+        else:
+            print(f"Ошибка при GET-запросе: {response.status}")
+        return result
 
     def get_random_user_id(self):
         print("adding user")
