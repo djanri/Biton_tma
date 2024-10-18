@@ -93,6 +93,9 @@ class NewOrder1(StatesGroup):
 class CancelOrder(StatesGroup):
     cancel = State()
 
+class Admin(StatesGroup):
+    name = State()
+
 
 # Проверка подписки
 def chek_chanel(chat_member):
@@ -155,7 +158,7 @@ async def start(message: types.Message):
 
 @dp.message_handler(commands=['my_admin_panel'])
 async def start(message: types.Message):
-    if message.from_user.id==765843635 or message.from_user.id ==504035257:
+    if message.from_user.id==765843635 or message.from_user.id==504035257 or message.from_user.id==828012647:
         await message.answer("Добро пожаловать в панель Супер-Админа 🦸")
         await message.answer("Выберите действие:" , reply_markup=krb.Super)
     else:
@@ -295,7 +298,7 @@ async def add_item_photo(message: types.Message, state: FSMContext):
 async def cancel_handler(callback_query: types.CallbackQuery, state: FSMContext):
     await state.finish()
     await callback_query.message.answer("Добавление отменено.")
-    await callback_query.message.answer(f'Добро пожаловать в TGplay!', reply_markup=krb.create_keyboard(user_id))
+    await callback_query.message.answer(f'Добро пожаловать в TGplay!', reply_markup=krb.create_keyboard(callback_query.message.from_user.id))
 
 
 # Другие хэндлеры остаются без изменений, логика взаимодействия с базой данных также убрана
@@ -360,7 +363,7 @@ async def More(callback_query: types.CallbackQuery):
 
 @dp.message_handler(state=NewOrder1.user_id)
 async def start_id(message: types.Message, state: FSMContext):
-    if message.text==isinstance(int):
+    if message.text.isnumeric():
         async with state.proxy() as data:
                 data['user_id'] = message.text
         await message.answer("Введите User_Name", reply_markup=krb.cancel_keyboard())
@@ -379,15 +382,29 @@ async def start_names(message: types.Message, state: FSMContext):
 async def start_names(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['chanel_url'] = message.text
-    await message.answer("Успешно Добавлено!", reply_markup=krb.cancel_keyboard())
+    await message.answer("Успешно Добавлено!")
     await NewOrder1.next()
-#     здесь отправка данных в бд
+
+    if apiClient.add_admin(data['user_id'], data["user_name"], data["chanel_url"]):
+        await bot.send_message(data['user_id'], "Новый админ зарегистрировался")
+    else:
+        await bot.send_message(data['user_id'], "Ошибка регистрации")
 
 
 
 @dp.callback_query_handler(lambda query: query.data == 'remove')
 async def More(callback_query: types.CallbackQuery):
     await callback_query.bot.send_message(callback_query.from_user.id , "Введите UserName для удаления пользователя из базы", reply_markup=krb.Back)
+    await Admin.next()
+
+@dp.message_handler(state=Admin.name)
+async def start_name(message: types.Message, state: FSMContext):
+    await Admin.next()
+    user_id = message.from_user.id
+    if apiClient.delete_admin(message.text):
+        await bot.send_message(user_id, "Успешно удален✅")
+    else:
+        await bot.send_message(user_id, "Ошибка удаления")
 
 # def get_all_user_ids():
 #     # Пример: возвращаем список user_id из базы данных

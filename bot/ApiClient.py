@@ -9,13 +9,14 @@ from rsa.cli import verify
 class ApiClient:
     api_url = "https://localhost:7000"
     users_url = f"{api_url}/users"
+    admins_url = f"{api_url}/admins"
     http = urllib3.PoolManager(
         cert_reqs="CERT_REQUIRED",
         ca_certs="./.cert/localhost.crt"
     )
 
     def user_exists(self, user_id):
-        response = self.http.request("GET", f'{self.users_url}/userid/{user_id}')
+        response = self.http.request("GET", f'{self.users_url}/{user_id}')
         result = False
         if response.status == 200:
             print("GET-запрос успешно выполнен!")
@@ -27,7 +28,6 @@ class ApiClient:
 
     def add_user(self, user_id, user_name, referer_id=0):
         print("adding user")
-        print(f"referalId {referer_id}")
         data = {
             "userId": user_id,
             "userName": user_name,
@@ -66,3 +66,31 @@ class ApiClient:
     
     async def add_prize(self, state):
         print("adding prize")
+
+    def add_admin(self, user_id, user_name, channel_url):
+        print("adding admin")
+        data = {
+            "userId": user_id,
+            "userName": user_name,
+            "channelUrl": channel_url
+        }
+        response = self.http.request("POST", self.admins_url, json=data)
+
+        result = False
+        if response.status == 201:
+            print("POST-запрос успешно выполнен!")
+            result = True
+        else:
+            print(f"Ошибка при POST-запросе: {response.status}")
+        return result
+
+    def delete_admin(self, user_name):
+        print(f"deleting admin: {user_name}")
+        response = self.http.request("DELETE", f"{self.admins_url}/{user_name}")
+        result = False
+        if response.status == 204:
+            print("DELETE-запрос успешно выполнен!")
+            result = True
+        else:
+            print(f"Ошибка при DELETE-запросе: {response.status}")
+        return result
