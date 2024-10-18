@@ -3,6 +3,7 @@ import { PrizesApiUrl } from "../api_links";
 import PrizeProps from "../models/PrizeProps";
 import UserProps from "../models/UserProps";
 import { useEventContext, UserContext } from "../components/UserContext";
+import { format } from "path";
 
 const PrizesPage = () => {
   const userData = useContext<UserProps | undefined>(UserContext);
@@ -61,13 +62,16 @@ const PrizesPage = () => {
       <header>
         <h2 className="balance-title">Призы</h2>
       </header>
-      <div className="list">
+      <div className="list prize">
         {prizeData?.map((prize, index) => (
-          <div className="item border" key={index}>
-            <p><b>{prize.name}</b></p>
-            <p>{prize.description}</p>
-            <p>Цена: {prize.cost} поинтов</p>
-            <button onClick={() => buyClick(prize)}>Купить</button>
+          <div className="item prize" key={index}>
+            <img src={`data:image/jpeg;base64,${prize.image}`} alt={`Приз ${index + 1}`} className="prize-img"></img>
+            <div className="description">
+              <p><b>{prize.name}</b></p>
+              <p className="description">{prize.description}</p>
+              <p className="cost">Цена: {prize.cost} поинтов</p>
+              <button onClick={() => buyClick(prize)}>Купить</button>
+            </div>
           </div>
       ))}
       </div>

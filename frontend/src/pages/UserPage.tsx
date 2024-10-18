@@ -31,7 +31,7 @@ const UserPage = () => {
   return (
     <>
     <Header/>
-    <div className="list">
+    <div className="list profile">
       {prizeData?.map((prize, index) => (
         <div className="item" key={index}>
           <div className="item-text">
