@@ -40,7 +40,7 @@ const Layout = () => {
             <div>Not found user</div>
             :
         <UserContext.Provider value={userData}>
-            <Header/>
+            
             <Outlet context={{ onRefresh: fetchUserData }}/>
             <Footer />
         </UserContext.Provider >

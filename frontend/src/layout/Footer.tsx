@@ -10,21 +10,30 @@ const Footer = () => {
       };
     return (
         <footer>
-            <input onChange={() => handleMouseEvent(PageUrl.User)}
-                type="radio"
-                name="menu"
-                checked={location.pathname == PageUrl.User}
-                className="footer-item user" />
-            <input onChange={() => handleMouseEvent(PageUrl.Prizes)}
-                type="radio"
-                name="menu"
-                checked={location.pathname == PageUrl.Prizes}
-                className="footer-item prize"/>
-            <input onChange={() => handleMouseEvent(PageUrl.Channels)}
-                type="radio"
-                name="menu"
-                checked={location.pathname == PageUrl.Channels}
-                className="footer-item channel"/>
+            <div className="footer-item">
+                <input onChange={() => handleMouseEvent(PageUrl.User)}
+                    type="radio"
+                    id="profile"
+                    name="menu"
+                    checked={location.pathname == PageUrl.User}/>
+                <label htmlFor="profile">Профиль</label>
+            </div>
+            <div className="footer-item">
+                <input onChange={() => handleMouseEvent(PageUrl.Prizes)}
+                    type="radio"
+                    id="prize"
+                    name="menu"
+                    checked={location.pathname == PageUrl.Prizes}/>
+                <label htmlFor="prize">Призы 🪙</label>
+            </div>
+            <div className="footer-item">
+                <input onChange={() => handleMouseEvent(PageUrl.Channels)}
+                    type="radio"
+                    id="point"
+                    name="menu"
+                    checked={location.pathname == PageUrl.Channels} />
+                <label htmlFor="point">Больше баллов</label>
+            </div>
       </footer>
     )
   }

@@ -6,8 +6,10 @@ const Header = () => {
     const userData = useContext<UserProps | undefined>(UserContext);
     return (
         <header>
-            <p className="balance">Баланс <span>{userData?.points}</span> поинтов</p>
-            <h2 className="welcome">Добро пожаловать <span>{userData?.userName}</span></h2>
+            <h2 className="balance-title">Мой баланс: </h2>
+            <h2 className="balance">{userData?.points}</h2>
+            <div className="welcome">Привет, @{userData?.userName}</div>
+            <div className="history">моя история покупок</div>
         </header>
     );
 }

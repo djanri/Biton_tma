@@ -1,11 +1,9 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Times New Roman', Times, serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -25,10 +23,9 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  /* place-items: center; */
-  min-width: 320px;
+  min-width: 120px;
   min-height: 100vh;
-  
+
   div {
     display: flex;
   }
@@ -41,48 +38,64 @@ body {
   footer {
     display: flex;
     justify-content: space-around;
-    height: 100px;
-    width: 100%;
-    background-color: #0088cc;
+    overflow: hidden;
+    color: white;
+    padding: 20px 0;
+
     .footer-item {
-      width: 100%;
-      display: flex;
+      display: flex;      
       justify-content: center;
       align-items: center;
-      color: white;
+      border-radius: 20px;
       appearance: none;
-      background-position: center;
-      background-size: contain;
-      background-repeat: no-repeat;
-      margin: 0;
-      &.user {
-        background-image: url(./assets/user.png);
-      }
-      &.prize {
-        background-image: url(./assets/prize.png);
-      }
-      &.channel {
-        background-image: url(./assets/channel.png);
-      }
+      margin: auto;
     }
-    .footer-item:checked {
-      background-color: #0271c0;
+    .footer-item input[type="radio"] {
+      appearance: none;
+      background-color: #0088cc;
+    }
+    .footer-item label {
+      background-color: #0088cc;
+      border-radius: 15px;
+      text-align: center;
+      padding: 5px 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s;
+      text-wrap: nowrap;
+      text-decoration: dotted;
+    }
+    .footer-item input[type="radio"]:checked + label {
+      background-color: #0262a7;
     }
   }
 
   header {
     display: flex;
+    border-radius: 10px;
     flex-direction: column;
-    width: 100%;
     background-color: #0088cc;
-    height: 90px;
+    height: fit-content;
+    margin: 10px 10px 20px 10px;
+    color: white;
+
+    .balance-title {
+      text-align: center;
+    }
+
     .balance {
       text-align: center;
       margin-bottom: 0;
+      margin-top: -10px;
     }
     .welcome {
-      margin-top: 0;
-      text-align: center;
+      margin-top: 10px;
+      align-self: center;
+      font-size: medium;
+    }
+    .history {
+      align-self: center;
+      margin-bottom: 5px;
+      color: rgba(255, 255, 255, 0.5);
     }
   }
 
@@ -91,8 +104,32 @@ body {
     flex: 1 1 auto;
     height: 0px;
     flex-direction: column;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0 10px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 0px 5px 0px rgba(255, 255, 255, 0.2);
     .item {
-      align-self: center;
+      border-bottom: 2px solid #0088cc;
+      padding: 10px;
+      justify-content: space-between;
+      .img-check {
+        background-image: url(./assets/check.png);
+        height: 20px;
+        width: 20px;
+        align-self: center;
+        background-size: contain;
+      }
+    }
+    .item-text {
+      flex-direction: column;
+      & p {
+        margin: 0;
+        font-weight: 600;
+      }
+      .point-text {
+        color: rgba(255, 255, 255, 0.3);
+      }
     }
     .item.border {
       border-bottom: solid 1px #0088cc;
@@ -135,14 +172,11 @@ button:focus-visible {
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+  .list {
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3) !important;
+    .point-text {
+      color: rgba(0, 0, 0, 0.4) !important;
+    }
   }
 }

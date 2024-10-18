@@ -25,14 +25,19 @@ const ChannelsPage = () => {
   }
 
   return (
-    <div className="list">
-      {channelData?.map((channel, index) => (
-        <div className="item border" key={index}>
-          <p><b>{channel.name}</b></p>
-          <p>{channel.url}</p>
-        </div>
-      ))}
-    </div>
+    <>
+      <header>
+      <h3 className="balance-title">Получи больше баллов!</h3>
+      </header>
+      <div className="list">
+        {channelData?.map((channel, index) => (
+          <div className="item border" key={index}>
+            <p><b>{channel.name}</b></p>
+            <p>{channel.url}</p>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 

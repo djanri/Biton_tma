@@ -3,6 +3,7 @@ import PrizeProps from "../models/PrizeProps";
 import { PrizesApiUrl } from "../api_links";
 import UserProps from "../models/UserProps";
 import { UserContext } from "../components/UserContext";
+import Header from "../layout/Header";
 
 const UserPage = () => {
   const userData = useContext<UserProps | undefined>(UserContext);
@@ -28,11 +29,20 @@ const UserPage = () => {
 
 
   return (
+    <>
+    <Header/>
     <div className="list">
       {prizeData?.map((prize, index) => (
-        <p className="item" key={index}>{prize.name}</p>
+        <div className="item" key={index}>
+          <div className="item-text">
+            <p className="point-text">{prize.cost}</p>
+            <p>{prize.name}</p>
+          </div>
+          <div className="img-check"></div>
+        </div>
       ))}
-    </div>
+      </div>
+    </>
   )
 }
 

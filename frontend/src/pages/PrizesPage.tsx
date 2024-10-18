@@ -57,16 +57,21 @@ const PrizesPage = () => {
   }
 
   return (
-    <div className="list">
-      {prizeData?.map((prize, index) => (
-        <div className="item border" key={index}>
-          <p><b>{prize.name}</b></p>
-          <p>{prize.description}</p>
-          <p>Цена: {prize.cost} поинтов</p>
-          <button onClick={() => buyClick(prize)}>Купить</button>
-        </div>
-    ))}
-    </div>
+    <>
+      <header>
+        <h2 className="balance-title">Призы</h2>
+      </header>
+      <div className="list">
+        {prizeData?.map((prize, index) => (
+          <div className="item border" key={index}>
+            <p><b>{prize.name}</b></p>
+            <p>{prize.description}</p>
+            <p>Цена: {prize.cost} поинтов</p>
+            <button onClick={() => buyClick(prize)}>Купить</button>
+          </div>
+      ))}
+      </div>
+    </>
   )
 }
 
