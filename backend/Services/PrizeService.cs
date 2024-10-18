@@ -23,6 +23,15 @@ public class PrizeService()
         var prize = await db.Prizes.FindAsync(id);
 
         if (prize is null) return TypedResults.NotFound();
+        if (prize.UserId == null && inputPrize.UserId != null)
+        {
+            var user = await db.Users.FindAsync(inputPrize.UserId);
+            if (user is not null && user.Points >= inputPrize.Cost)
+            {
+                user.Points -= inputPrize.Cost;
+                prize.UserId = inputPrize.UserId;
+            }
+        }
 
         prize.Name = inputPrize.Name;
         prize.Description = inputPrize.Description;
@@ -30,7 +39,6 @@ public class PrizeService()
         prize.Image = inputPrize.Image;
         prize.ChannelUrl = inputPrize.ChannelUrl;
         prize.ChannelName = inputPrize.ChannelName;
-        prize.UserId = inputPrize.UserId;
 
         await db.SaveChangesAsync();
 
