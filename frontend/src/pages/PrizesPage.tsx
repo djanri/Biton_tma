@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PrizesApiUrl } from "../api_links";
 import PrizeProps from "../models/PrizeProps";
+import UserProps from "../models/UserProps";
+import { useEventContext, UserContext } from "../components/UserContext";
 
 const PrizesPage = () => {
+  const userData = useContext<UserProps | undefined>(UserContext);
+  const { onRefresh } = useEventContext();
   const [prizeData, setPrizeData] = useState<PrizeProps[]>();
   let isIgnore = false;
-  const userId = 1;
   
   useEffect(() => {
     fetchData();
@@ -27,7 +30,12 @@ const PrizesPage = () => {
 
   const buyClick = async (prize: PrizeProps) => {
     console.log("click");
-    prize.userId = userId;
+    if (userData?.points == undefined || userData?.points < prize.cost)
+    {
+      console.log("no extra points");
+      return;
+    }
+    prize.userId = userData?.userId ?? 0;
     const settings = {
       method: 'PUT',
       headers: {
@@ -42,6 +50,7 @@ const PrizesPage = () => {
       if (response.ok) {
         fetchData();
       }
+      onRefresh();
     } catch (e) {
       console.error("buy prize by user error,", e);
     }

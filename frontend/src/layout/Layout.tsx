@@ -7,6 +7,7 @@ import UserProps from "../models/UserProps"
 import { UsersApiUrl } from "../api_links"
 import { initData, useSignal } from "@telegram-apps/sdk-solid"
 
+
 const Layout = () => {
     const [userData, setUserData] = useState<UserProps>();
     const initTelegramData = useSignal(initData.state);
@@ -22,7 +23,7 @@ const Layout = () => {
             if (!isIgnore) {
                 isIgnore = true;
                 const user = initTelegramData()?.user;
-                const response = await fetch(`${UsersApiUrl}/userid/${user?.id}`);
+                const response = await fetch(`${UsersApiUrl}/${user?.id}`);
                 const data = await response.json();
                 setUserData(data);
                 console.log(data);
@@ -40,7 +41,7 @@ const Layout = () => {
             :
         <UserContext.Provider value={userData}>
             <Header/>
-            <Outlet/>
+            <Outlet context={{ onRefresh: fetchUserData }}/>
             <Footer />
         </UserContext.Provider >
     )
