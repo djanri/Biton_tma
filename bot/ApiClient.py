@@ -10,6 +10,9 @@ class ApiClient:
     api_url = "https://localhost:7000"
     users_url = f"{api_url}/users"
     admins_url = f"{api_url}/admins"
+    prizes_url = f"{api_url}/prizes"
+
+
     http = urllib3.PoolManager(
         cert_reqs="CERT_REQUIRED",
         ca_certs="./.cert/localhost.crt"
@@ -64,8 +67,26 @@ class ApiClient:
     def get_all_user_ids(self):
         print("adding user")
     
-    async def add_prize(self, state):
+    async def add_prize(self, user_id, state):
         print("adding prize")
+        data = {
+            "name": state['name'],
+            "description": state['description'],
+            "cost": state['price'],
+            "image": state['photo'],
+            "channelUrl": "channelUrl",
+            "channelName": "channelName",
+            "userId": user_id
+        }
+        response = self.http.request("POST", self.prizes_url, json=data)
+
+        result = False
+        if response.status == 201:
+            print("POST-запрос успешно выполнен!")
+            result = True
+        else:
+            print(f"Ошибка при POST-запросе: {response.status}")
+        return result
 
     def add_admin(self, user_id, user_name, channel_url):
         print("adding admin")
@@ -93,4 +114,16 @@ class ApiClient:
             result = True
         else:
             print(f"Ошибка при DELETE-запросе: {response.status}")
+        return result
+
+    def exist_admin(self, user_id):
+        print(f"checking admin is exist")
+        response = self.http.request("GET", f"{self.admins_url}/{user_id}")
+        print(response.json())
+        result = False
+        if response.status == 200:
+            print("GET-запрос успешно выполнен!")
+            result = True
+        else:
+            print(f"Ошибка при GET-запросе: {response.status}")
         return result

@@ -1,4 +1,9 @@
 import asyncio
+import base64
+import json
+from Tools.scripts.pindent import delete_file
+
+from aiohttp.web_routedef import delete
 
 from ApiClient import ApiClient
 from reaktion import reaction
@@ -83,6 +88,7 @@ class NewOrder(StatesGroup):
     name = State()
     price = State()
     photo = State()
+    description = State()
 
 class NewOrder1(StatesGroup):
     user_id = State()
@@ -145,7 +151,7 @@ async def start(message: types.Message):
 
 @dp.message_handler(commands=['admin'])
 async def start(message: types.Message):
-    if message.chat.id in []:
+    if apiClient.exist_admin(message.chat.id):
         await message.answer("Успешный вход в админ панель✅")
         await message.answer("Чтобы добавить приз нажмите на сит фразу /admin_1_get_users\nЧтобы вернуться в меню /start")
     else:
@@ -257,41 +263,27 @@ async def add_item_photo_check(message: types.Message):
 
 @dp.message_handler(content_types=['photo'], state=NewOrder.photo)
 async def add_item_photo(message: types.Message, state: FSMContext):
-    # # Получаем фото и выбираем наибольшее качество
-    # print("Получение фото...")
-    # photo = message.photo[-1]  # берём самое качественное фото (последний элемент)
-    #
-    # # Получаем файл изображения
-    # file_id = photo.file_id
-    # file = await bot.get_file(file_id)
-    #
-    # # Указываем путь для сохранения
-    # way = f'/Gamefication/img/{file.file_path.split("/")[-1]}'  # Добавляем имя файла
-    #
-    # # Скачиваем файл
-    # await bot.download_file(file.file_path, way)  # Сохраняем файл
-    # print("Фото сохранено")
-    #
-    # # Сохраняем идентификатор файла в состоянии
-    # async with state.proxy() as data:
-    #     data['photo'] = file_id
-    #
-    # # Добавляем элемент в базу данных
-    # await db1.add_item(state)
-    # await message.answer('Приз успешно добавлен!')
-    # await state.finish()
     photo = message.photo[-1]
+    print(photo)
     file_id = photo.file_id
     file = await bot.get_file(file_id)
-
-    way = f'/Gamefication/img/{file.file_path.split("/")[-1]}'
-    await bot.download_file(file.file_path, way)
+    await bot.download_file_by_id(file_id, file.file_path)
+    print(file)
+    with open(file.file_path, 'rb') as image:
+        image_data = image.read()
 
     async with state.proxy() as data:
-        data['photo'] = file_id
+        data['photo'] = base64.b64encode(image_data).decode('utf-8')
+        data['description'] = message.caption
+
+    if os.path.exists(file.file_path):
+        os.remove(file.file_path)
 
     # Убрана логика сохранения в базу данных
-    await message.answer('Приз успешно добавлен!')
+    if await apiClient.add_prize(message.from_user.id, data):
+        await message.answer('Приз успешно добавлен!')
+    else:
+        await message.answer('Ошибка добавления!')
     await state.finish()
 
 @dp.callback_query_handler(text='cancel', state="*")
