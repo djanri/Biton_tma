@@ -29,11 +29,11 @@ const ChannelsPage = () => {
       <header>
       <h3 className="balance-title">Получи больше баллов!</h3>
       </header>
-      <div className="list">
+      <div className="list prize">
         {channelData?.map((channel, index) => (
-          <div className="item border" key={index}>
+          <div className="item prize channel" key={index}>
             <p><b>{channel.name}</b></p>
-            <p>{channel.url}</p>
+            <button >Подписаться</button>
           </div>
         ))}
       </div>
