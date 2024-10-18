@@ -76,10 +76,10 @@ class ApiClient:
         return result
 
     def get_random_user_id(self):
-        print("adding user")
+        print("random user")
 
     def get_all_user_ids(self):
-        print("adding user")
+        print("all users")
     
     async def add_prize(self, user_id, state):
         print("adding prize")
@@ -89,8 +89,7 @@ class ApiClient:
             "cost": state['price'],
             "image": state['photo'],
             "channelUrl": "channelUrl",
-            "channelName": "channelName",
-            "userId": user_id
+            "channelName": "channelName"
         }
         response = self.http.request("POST", self.prizes_url, json=data)
 
