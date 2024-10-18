@@ -62,7 +62,6 @@ userItems.MapPost("/", UserService.CreateUser);
 userItems.MapPut("/{id}", UserService.UpdateUser);
 userItems.MapDelete("/{id}", UserService.DeleteUser);
 
-userItems.MapGet("/userid/{id}", UserService.GetUserByUserId);
 userItems.MapGet("/random", UserService.GetRandomUser);
 userItems.MapGet("/referals-count/{id}", UserService.GetReferalsCount);
 
@@ -78,8 +77,7 @@ prizeItems.MapGet("/active", PrizeService.GetPrizeActive);
 var adminItems = app.MapGroup("/admins");
 adminItems.MapGet("/{id}", AdminService.GetAdmin);
 adminItems.MapPost("/", AdminService.CreateAdmin);
-adminItems.MapPut("/{id}", AdminService.UpdateAdmin);
-adminItems.MapDelete("/{id}", AdminService.DeleteAdmin);
+adminItems.MapDelete("/{name}", AdminService.DeleteAdminByName);
 
 
 var chnnelItems = app.MapGroup("/channels");

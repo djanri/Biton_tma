@@ -15,7 +15,7 @@ public class UserService()
         db.Users.Add(user);
         await db.SaveChangesAsync();
 
-        return TypedResults.Created($"/users/{user.Id}", user);
+        return TypedResults.Created($"/users/{user.UserId}", user);
     }
 
     public static async Task<IResult> UpdateUser(int id, User inputUser, AppDBContext db)
@@ -58,13 +58,4 @@ public class UserService()
                     ? TypedResults.Ok(user)
                     : TypedResults.NotFound();
     }
-
-    public static async Task<IResult> GetUserByUserId(int id, AppDBContext db)
-    {
-        return await db.Users.FirstOrDefaultAsync(us => us.UserId == id)
-                is User user
-                    ? TypedResults.Ok(user)
-                    : TypedResults.NotFound();
-    }
-
 }

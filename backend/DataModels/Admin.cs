@@ -1,9 +1,14 @@
 
+using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
+
+[Index(nameof(UserName), IsUnique = true)]
 public class Admin
 {
-    public int Id { get; set; }
+    [Key]
+    public int UserId { get; set; }
 
-    public int UserName { get; set;}
+    public required string UserName { get; set;}
 
     public required string ChannelUrl { get; set;}
 }

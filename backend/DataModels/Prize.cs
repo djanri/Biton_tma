@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+
+[Index(nameof(UserId), AllDescending = true)]
 public class Prize
 {
     public int Id { get; set; }
