@@ -431,8 +431,11 @@ async def process_goto_post(callback_query: types.CallbackQuery):
     final_reactions = await get_reactions_count(post_url)
 
     try:
+        user_data = apiClient.get_random_user()
         if final_reactions > initial_reactions:
-            db1.update_user_score(user_id, 50)
+            user_data['points'] += 50
+            target_user_id = user_data['userId']
+            apiClient.update_user(target_user_id, user_data)
             await bot.answer_callback_query(callback_query.id, "Вы получили 50 баллов!")
             await bot.send_message(callback_query.message.chat.id,
                                    f"Пользователь {callback_query.from_user.username} получил 50 баллов!")
