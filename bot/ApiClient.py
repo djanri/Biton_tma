@@ -75,11 +75,27 @@ class ApiClient:
             print(f"Ошибка при GET-запросе: {response.status}")
         return result
 
-    def get_random_user_id(self):
+    def get_random_user(self):
         print("random user")
+        response = self.http.request("GET", f'{self.users_url}/random')
+        user = None
+        if response.status == 200:
+            print("GET-запрос успешно выполнен!")
+            user = response.json()
+        else:
+            print(f"Ошибка при GET-запросе: {response.status}")
+        return user
 
     def get_all_user_ids(self):
         print("all users")
+        response = self.http.request("GET", f'{self.users_url}/ids')
+        user = None
+        if response.status == 200:
+            print("GET-запрос успешно выполнен!")
+            user = response.json()
+        else:
+            print(f"Ошибка при GET-запросе: {response.status}")
+        return user
     
     async def add_prize(self, user_id, state):
         print("adding prize")

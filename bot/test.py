@@ -385,36 +385,38 @@ async def get_reactions_count(post_url):
     return await reaction(0)  # Пример: возвращаем количество реакций
 
 
-# @dp.channel_post_handler()
-# async def channel_message(message: types.Message):
-#     # Когда в канале появляется новое сообщение, оно будет обрабатываться здесь
-#     reactions = await reaction(1)
-#     user_id1 = db1.get_random_user_id()
-#     db1.update_user_score(user_id1, reactions * 50)
-#     print(f"Saving to DB")
-#
-#     # Отправляем сообщение пользователю
-#     try:
-#         await bot.send_message(user_id1, f"Вы выиграли {reactions * 50} баллов!")
-#     except Exception as e:
-#         print(f"Не удалось отправить сообщение пользователю {user_id1}: {e}")
-#
-#     # Создаем кнопки с url и callback_data
-#     post_url = f"https://t.me/mvp1test"
-#     keyboard = InlineKeyboardMarkup().add(
-#         InlineKeyboardButton("Перейти к посту", url=post_url),
-#         InlineKeyboardButton("Получить баллы", callback_data=f"goto_post:{message.message_id}")
-#     )
-#
-#     # Получаем все user_id пользователей
-#     user_ids = get_all_user_ids()
-#
-#     # Отправляем сообщение с кнопками каждому пользователю
-#     for user_id in user_ids:
-#         try:
-#             await bot.send_message(user_id, "Новый пост в канале!", reply_markup=keyboard)
-#         except Exception as e:
-#             print(f"Не удалось отправить сообщение пользователю {user_id}: {e}")
+@dp.channel_post_handler()
+async def channel_message(message: types.Message):
+    # Когда в канале появляется новое сообщение, оно будет обрабатываться здесь
+    reactions = await reaction(1)
+    user_data = apiClient.get_random_user()
+    user_data['points'] += reactions * 50
+    target_user_id = user_data['userId']
+    apiClient.update_user(target_user_id, user_data)
+    print(f"Saving to DB points")
+
+    # Отправляем сообщение пользователю
+    try:
+        await bot.send_message(target_user_id, f"Вы выиграли {reactions * 50} баллов!")
+    except Exception as e:
+        print(f"Не удалось отправить сообщение пользователю {target_user_id}: {e}")
+
+    # Создаем кнопки с url и callback_data
+    post_url = f"https://t.me/mvp1test"
+    keyboard = InlineKeyboardMarkup().add(
+        InlineKeyboardButton("Перейти к посту", url=post_url),
+        InlineKeyboardButton("Получить баллы", callback_data=f"goto_post:{message.message_id}")
+    )
+
+    # Получаем все user_id пользователей
+    user_ids = apiClient.get_all_user_ids()
+
+    # Отправляем сообщение с кнопками каждому пользователю
+    for user_id in user_ids:
+        try:
+            await bot.send_message(user_id, "Новый пост в канале!", reply_markup=keyboard)
+        except Exception as e:
+            print(f"Не удалось отправить сообщение пользователю {user_id}: {e}")
 
 
 @dp.callback_query_handler(lambda c: c.data and c.data.startswith('goto_post'))
