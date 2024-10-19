@@ -431,7 +431,7 @@ async def process_goto_post(callback_query: types.CallbackQuery):
     final_reactions = await get_reactions_count(post_url)
 
     try:
-        user_data = apiClient.get_random_user()
+        user_data = apiClient.get_user(user_id)
         if final_reactions > initial_reactions:
             user_data['points'] += 50
             target_user_id = user_data['userId']
