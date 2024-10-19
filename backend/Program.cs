@@ -63,6 +63,7 @@ userItems.MapPut("/{id}", UserService.UpdateUser);
 userItems.MapDelete("/{id}", UserService.DeleteUser);
 
 userItems.MapGet("/random", UserService.GetRandomUser);
+userItems.MapGet("/ids", UserService.GetAllUserIds);
 userItems.MapGet("/referals-count/{id}", UserService.GetReferalsCount);
 
 var prizeItems = app.MapGroup("/prizes");

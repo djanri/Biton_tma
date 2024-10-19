@@ -58,4 +58,10 @@ public class UserService()
                     ? TypedResults.Ok(user)
                     : TypedResults.NotFound();
     }
+
+    public static async Task<IResult> GetAllUserIds(AppDBContext db)
+    {
+        int[] ids = await db.Users.Select(us => us.UserId).ToArrayAsync();
+        return TypedResults.Ok(ids);
+    }
 }
