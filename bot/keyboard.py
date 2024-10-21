@@ -1,8 +1,5 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
-
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
-
 def create_keyboard(user_id):
     web_app_info = WebAppInfo(url=f'https://biton-tma.local?user_id={user_id}')
     glav = InlineKeyboardMarkup(inline_keyboard=[

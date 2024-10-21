@@ -1,19 +1,8 @@
 import asyncio
 import base64
-import json
-from Tools.scripts.pindent import delete_file
-
-from aiohttp.web_routedef import delete
-
 from ApiClient import ApiClient
 from reaktion import reaction
-from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types.web_app_info import WebAppInfo
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.dispatcher import FSMContext
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.dispatcher import FSMContext
 import keyboard as krb
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import config as cf
@@ -26,11 +15,9 @@ from collections import defaultdict
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.utils.exceptions import ChatNotFound, BadRequest
 import logging
 import requests
 import time
-import aiohttp
 
 
 BOT_TOKEN = '7061940889:AAHwuc8VIAg2CPAQAel9g-XdJR9Lo8_X4mc'

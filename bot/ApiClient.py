@@ -1,9 +1,4 @@
-import socket
-
-import certifi
-import requests
 import urllib3
-from rsa.cli import verify
 
 
 class ApiClient:

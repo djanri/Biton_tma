@@ -1,21 +1,17 @@
 import asyncio
 from reaktion import reaction
 from aiogram import Bot, Dispatcher, executor, types
-from aiogram.types.web_app_info import WebAppInfo
 from aiogram.dispatcher.filters.state import State, StatesGroup
-from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 import keyboard as krb
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import config as cf
-import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import defaultdict
 import logging
 import requests
 import time
-import aiohttp
 import ApiClient
 
 
