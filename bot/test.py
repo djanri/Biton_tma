@@ -170,10 +170,14 @@ async def handle_message(message: types.Message):
 
     if message.chat.type == 'supergroup':
         user_id = message.from_user.id
+        if user_id == 777000:
+            return
         message_text = message.text.lower()
 
         # Получаем текущее количество баллов пользователя
         user = apiClient.get_user(user_id)
+        if user is None:
+            return
         current_score = user['points']
         if current_score is None:
             current_score = 0
