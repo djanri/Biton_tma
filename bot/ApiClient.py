@@ -31,7 +31,6 @@ class ApiClient:
             "referalId": 0 if referer_id == "" else referer_id
         }
         response = self.http.request("POST", self.users_url, json=data)
-        print(response.status)
         if response.status == 201:
             print("POST-запрос успешно выполнен!")
         else:
@@ -143,7 +142,6 @@ class ApiClient:
     def exist_admin(self, user_id):
         print(f"checking admin is exist")
         response = self.http.request("GET", f"{self.admins_url}/{user_id}")
-        print(response.json())
         result = False
         if response.status == 200:
             print("GET-запрос успешно выполнен!")
