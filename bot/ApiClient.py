@@ -2,7 +2,7 @@ import urllib3
 
 
 class ApiClient:
-    api_url = "https://localhost:7000"
+    api_url = "http://localhost:5000"
     users_url = f"{api_url}/users"
     admins_url = f"{api_url}/admins"
     prizes_url = f"{api_url}/prizes"
