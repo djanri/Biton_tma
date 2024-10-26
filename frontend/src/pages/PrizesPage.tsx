@@ -3,7 +3,6 @@ import { PrizesApiUrl } from "../api_links";
 import PrizeProps from "../models/PrizeProps";
 import UserProps from "../models/UserProps";
 import { useEventContext, UserContext } from "../components/UserContext";
-import { format } from "path";
 
 const PrizesPage = () => {
   const userData = useContext<UserProps | undefined>(UserContext);

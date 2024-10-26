@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom"
 import Footer from "./Footer"
-import Header from "./Header"
 import { UserContext } from "../components/UserContext"
 import { useEffect, useState } from "react"
 import UserProps from "../models/UserProps"
