@@ -14,6 +14,7 @@ class ApiClient:
     )
 
     def user_exists(self, user_id):
+        print(f"adding user: {user_id}")
         response = self.http.request("GET", f'{self.users_url}/{user_id}')
         result = False
         if response.status == 200:
@@ -24,7 +25,7 @@ class ApiClient:
         return result
 
     def add_user(self, user_id, user_name, referer_id=0):
-        print("adding user")
+        print(f"adding user: {user_id}")
         data = {
             "userId": user_id,
             "userName": user_name,
@@ -37,7 +38,7 @@ class ApiClient:
             print(f"Ошибка при POST-запросе: {response.status}")
 
     def count_referals(self, user_id):
-        print("get referals count")
+        print(f"get referals count: {user_id}")
         response = self.http.request("GET", f'{self.users_url}/referals-count/{user_id}')
         result : int = 0
         if response.status == 200:
@@ -48,7 +49,7 @@ class ApiClient:
         return result
     
     def get_user(self, user_id):
-        print("get user")
+        print(f"get user: {user_id}")
         response = self.http.request("GET", f'{self.users_url}/{user_id}')
         user = None
         if response.status == 200:
@@ -59,7 +60,7 @@ class ApiClient:
         return user
 
     def update_user(self, user_id, user_data):
-        print("update user")
+        print(f"update user: {user_id}")
         response = self.http.request("PUT", f'{self.users_url}/{user_id}', json = user_data)
         result = False
         if response.status == 204:
@@ -91,7 +92,7 @@ class ApiClient:
             print(f"Ошибка при GET-запросе: {response.status}")
         return user
     
-    async def add_prize(self, user_id, state):
+    async def add_prize(self, state):
         print("adding prize")
         data = {
             "name": state['name'],
@@ -112,7 +113,7 @@ class ApiClient:
         return result
 
     def add_admin(self, user_id, user_name, channel_url):
-        print("adding admin")
+        print(f"adding admin: {user_id}")
         data = {
             "userId": user_id,
             "userName": user_name,

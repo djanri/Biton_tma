@@ -20,7 +20,7 @@ import requests
 import time
 
 
-BOT_TOKEN = '7061940889:AAHwuc8VIAg2CPAQAel9g-XdJR9Lo8_X4mc'
+BOT_TOKEN = '7061940889:AAEpuijapxSrjwJDSP8ngABd6tq1kLs9yiE'
 
 
 # Функция для добавления плохих слов
@@ -109,14 +109,25 @@ async def start(message: types.Message):
     full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
     print(f"user_id: {user_id}")
     chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=message.from_user.id)
+    start_command = message.text
+    referer_id = str(start_command[7:])  # Предполагается, что ссылка начинается с '/start '
     if chek_chanel(chat_member):
         if not apiClient.user_exists(user_id):
-            start_command = message.text
-            referer_id = str(start_command[7:])  # Предполагается, что ссылка начинается с '/start '
             if referer_id != "":
                 if referer_id != str(message.from_user.id):
                     apiClient.add_user(user_id, full_name, referer_id)
                     await bot.send_message(referer_id, "По вашей ссылке зарегистрировался новый пользователь")
+                    user_data = apiClient.get_user(referer_id)
+                    print(user_data)
+                    if user_data:
+                        user_data['points'] += 100
+                        current_score = user_data['points']
+                        if apiClient.update_user(referer_id, user_data):
+                            await message.answer(f'{full_name}, Ваши баллы: {current_score}')
+                        else:
+                            await message.answer(f'{full_name}, Ошибка обновления баллов')
+                    else:
+                        await message.answer(f'{full_name}, Ошибка обновления баллов')
                 else:
                     apiClient.add_user(user_id, full_name)
                     await bot.send_message(message.from_user.id,
@@ -126,15 +137,7 @@ async def start(message: types.Message):
         await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!',
                              reply_markup=krb.create_keyboard(user_id))
     else:
-        await bot.send_message(user_id, Not_Sub_Message, reply_markup=krb.My_Chanel)
-
-    chat_member = await bot.get_chat_member(chat_id=Chanel_id, user_id=user_id)
-    if chek_chanel(chat_member):
-        # Логика взаимодействия с базой данных убрана
-        # api_client.add_user(user_id=user_id, user_name=full_name)
-        await message.answer(f'Привет, {full_name}\nДобро пожаловать в TGplay!', reply_markup=krb.create_keyboard(user_id))
-    else:
-        await bot.send_message(user_id, Not_Sub_Message, reply_markup=krb.My_Chanel)
+        await bot.send_message(user_id, Not_Sub_Message, reply_markup=krb.My_Chanel, reply_to_message_id=message.message_id)
 
 @dp.message_handler(commands=['admin'])
 async def start(message: types.Message):
@@ -189,9 +192,9 @@ async def handle_message(message: types.Message):
 
         if len(user_comments[user_id]) < 3:
             # Начисляем балл, если комментариев меньше 3 за 5 часов
-            user['points'] += 1
+            user['points'] += 50
             if apiClient.update_user(user_id, user):
-                current_score += 1
+                current_score += 50
                 user_comments[user_id].append(current_time)  # Добавляем текущее время в список
                 await message.answer(f'{full_name}, Ваши баллы: {current_score}')
             else:
@@ -246,7 +249,7 @@ async def add_item_photo(message: types.Message, state: FSMContext):
         os.remove(file.file_path)
 
     # Убрана логика сохранения в базу данных
-    if await apiClient.add_prize(message.from_user.id, data):
+    if await apiClient.add_prize(data):
         await message.answer('Приз успешно добавлен!')
     else:
         await message.answer('Ошибка добавления!')
@@ -265,16 +268,47 @@ async def cancel_handler(callback_query: types.CallbackQuery, state: FSMContext)
 # калбэки
 @dp.callback_query_handler(text="sub")
 async def subchanel(callback_query: types.CallbackQuery):
+    referer_id = ''
+    ref_message_id = ''
+    if callback_query.message.reply_to_message:
+        ref_message_id = callback_query.message.reply_to_message.message_id
+        referer_id = callback_query.message.reply_to_message.text[7:]
+    print(referer_id)
     user_name = callback_query.from_user.first_name
     user_last_name = callback_query.from_user.last_name
     full_name = f'{user_name} {user_last_name}' if user_last_name else user_name
     await bot.delete_message(callback_query.from_user.id, callback_query.message.message_id)
 
     if chek_chanel(await bot.get_chat_member(chat_id=Chanel_id, user_id=callback_query.from_user.id)):
+        if not apiClient.user_exists(user_id):
+            if referer_id != "":
+                if referer_id != str(callback_query.message.from_user.id):
+                    apiClient.add_user(user_id, full_name, referer_id)
+                    await bot.send_message(referer_id, "По вашей ссылке зарегистрировался новый пользователь")
+                    apiClient.add_user(user_id, full_name, referer_id)
+                    await bot.send_message(referer_id, "По вашей ссылке зарегистрировался новый пользователь")
+                    user_data = apiClient.get_user(referer_id)
+                    print(user_data)
+                    if user_data:
+                        user_data['points'] += 100
+                        current_score = user_data['points']
+                        if apiClient.update_user(referer_id, user_data):
+                            await bot.send_message(callback_query.from_user.id, f'{full_name}, Ваши баллы: {current_score}')
+                        else:
+                            await bot.send_message(callback_query.from_user.id, f'{full_name}, Ошибка обновления баллов')
+                    else:
+                        await bot.send_message(callback_query.from_user.id, f'{full_name}, Ошибка обновления баллов')
+                else:
+                    apiClient.add_user(user_id, full_name)
+                    await bot.send_message(callback_query.message.from_user.id,
+                                           "Нельзя регистрировать по собственной реферальной ссылке!")
+            else:
+                apiClient.add_user(user_id, full_name, "")
         await bot.send_message(callback_query.from_user.id, f'Привет, {full_name}\nДобро пожаловать в TGplay!',
                                reply_markup=krb.create_keyboard(user_id))
     else:
-        await bot.send_message(callback_query.from_user.id, Not_Sub_Message, reply_markup=krb.My_Chanel)
+        print("check_channel false")
+        await bot.send_message(callback_query.from_user.id, Not_Sub_Message, reply_markup=krb.My_Chanel, reply_to_message_id=ref_message_id)
 
 
 @dp.callback_query_handler(lambda query: query.data == 'more')
@@ -346,7 +380,7 @@ async def start_names(message: types.Message, state: FSMContext):
     if apiClient.add_admin(data['user_id'], data["user_name"], data["chanel_url"]):
         await bot.send_message(data['user_id'], "Новый админ зарегистрировался")
     else:
-        await bot.send_message(data['user_id'], "Ошибка регистрации")
+        await bot.send_message(data['user_id'], "Ошибка регистрации админа")
 
 
 
@@ -384,7 +418,7 @@ async def channel_message(message: types.Message):
     user_data['points'] += reactions * 50
     target_user_id = user_data['userId']
     apiClient.update_user(target_user_id, user_data)
-    print(f"Saving to DB points")
+    print(f"Saved to DB points")
 
     # Отправляем сообщение пользователю
     try:
