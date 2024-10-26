@@ -13,7 +13,9 @@ builder.Services.AddCors(options =>
             "https://biton-tma.local:443", 
             "https://biton-tma.local",
             "http://localhost",
-            "https://localhost")
+            "https://localhost",
+            "https://gamefication.tw1.su",
+            "https://89.23.116.202")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
