@@ -1,7 +1,8 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 
 def create_keyboard(user_id):
-    web_app_info = WebAppInfo(url=f'https://biton-tma.local?user_id={user_id}')
+    # web_app_info = WebAppInfo(url=f'https://biton-tma.local?user_id={user_id}')
+    web_app_info = WebAppInfo(url=f'https://gamefication.tw1.su?user_id={user_id}')
     glav = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text="Go to the app💡", web_app=web_app_info)],
         [InlineKeyboardButton(text="Подробнее о проекте ⁉️", callback_data='more')],

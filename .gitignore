@@ -2,3 +2,4 @@
 /backend/bin
 /backend/obj
 .idea/
+backend/build/

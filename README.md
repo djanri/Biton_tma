@@ -28,6 +28,11 @@
 
 ```dotnet run -watch```
 
+- to publish
+```dotnet publish -c Release -o ./build/ --runtime linux-x64```
+
+- copy build files to server
+
 
 #frontend
 
@@ -39,6 +44,9 @@
 
 - start app
 ```npm run dev```
+
+- build app
+```npm run build```
 
 - open in browser url https://biton-tma.local
 
