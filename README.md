@@ -51,3 +51,21 @@
 - open in browser url https://biton-tma.local
 
 
+#bot
+
+- go to server and run command(if you didn't it before)
+```screen```
+
+-go to bot folder and run
+```python test.py```
+
+- Detach from the screen by hitting CTRL + A + D on your keyboard
+
+- to list all screens
+```screen -ls```
+
+- To reattach to the screen
+```screen -r```
+
+- list all processes
+```ps aux```
