@@ -49,8 +49,8 @@ user_scores = {}
 bad_words_url = "https://www.cs.cmu.edu/~biglou/resources/bad-words.txt"
 bad_words = load_bad_words(bad_words_url)
 
-Chanel_id = "-1002208916163"
-Chanel2_id = "-1002154835852"
+Chanel_id = "-1002154835852"
+Chanel2_id = "-1002208916163"
 Not_Sub_Message = "Для доступа к функционалу, пожалуйста подпишитесь на канал!"
 storage = MemoryStorage()
 
@@ -427,7 +427,7 @@ async def channel_message(message: types.Message):
         print(f"Не удалось отправить сообщение пользователю {target_user_id}: {e}")
 
     # Создаем кнопки с url и callback_data
-    post_url = f"https://t.me/mvp1test"
+    post_url = f"https://t.me/studeventsmsk"
     keyboard = InlineKeyboardMarkup().add(
         InlineKeyboardButton("Перейти к посту", url=post_url),
         InlineKeyboardButton("Получить баллы", callback_data=f"goto_post:{message.message_id}")
@@ -448,7 +448,7 @@ async def channel_message(message: types.Message):
 async def process_goto_post(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     message_id = callback_query.data.split(':')[1]
-    post_url = f"https://t.me/mvp1test"
+    post_url = f"https://t.me/studeventsmsk"
     initial_reactions = await get_reactions_count(post_url)
 
     await asyncio.sleep(10)  # Ждем 10 секунд

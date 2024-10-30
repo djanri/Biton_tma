@@ -9,7 +9,7 @@ client = TelegramClient(phone, api_id, api_hash)
 
 async def reaction(index):
     async with client:
-        messages = await client.get_messages('@mvp1test', limit=5)
+        messages = await client.get_messages('@studeventsmsk', limit=5)
 
         if messages:
             msg_id = messages[index].id
@@ -17,7 +17,7 @@ async def reaction(index):
 
             # Отправка реакции
             await client(functions.messages.SendReactionRequest(
-                peer='@mvp1test',
+                peer='@studeventsmsk',
                 msg_id=msg_id,
                 big=True,
                 add_to_recent=True,
@@ -26,7 +26,7 @@ async def reaction(index):
 
             # Получение списка реакций
             result = await client(functions.messages.GetMessagesReactionsRequest(
-                peer='@mvp1test',
+                peer='@studeventsmsk',
                 id=[msg_id]
             ))
 
