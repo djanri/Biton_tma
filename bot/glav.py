@@ -38,7 +38,8 @@ user_data = defaultdict(lambda: {'points': 0, 'comments': 0, 'last_comment_time'
 logging.basicConfig(level=logging.INFO)
 
 # Конфигурация бота
-bot = Bot(token='7061940889:AAHwuc8VIAg2CPAQAel9g-XdJR9Lo8_X4mc')
+# bot = Bot(token='7061940889:AAHwuc8VIAg2CPAQAel9g-XdJR9Lo8_X4mc')
+bot = Bot(token='7061940889:AAEpuijapxSrjwJDSP8ngABd6tq1kLs9yiE')
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
