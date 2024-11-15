@@ -12,7 +12,7 @@ from collections import defaultdict
 import logging
 import requests
 import time
-import ApiClient
+from ApiClient import ApiClient
 
 
 BOT_TOKEN='7061940889:AAHwuc8VIAg2CPAQAel9g-XdJR9Lo8_X4mc'
