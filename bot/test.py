@@ -49,8 +49,8 @@ user_scores = {}
 bad_words_url = "https://www.cs.cmu.edu/~biglou/resources/bad-words.txt"
 bad_words = load_bad_words(bad_words_url)
 
-Chanel_id = "-1002154835852"
-Chanel2_id = "-1002208916163"
+Chanel_id="-1002208916163"
+Chanel2_id="-1002154835852"
 Not_Sub_Message = "Для доступа к функционалу, пожалуйста подпишитесь на канал!"
 storage = MemoryStorage()
 
