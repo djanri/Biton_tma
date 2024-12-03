@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 const string MyAllowSpecificOrigins = "forbitontmalocalhost";
 
@@ -26,8 +27,8 @@ builder.Services.AddDbContext<AppDBContext>(options =>
 {
     options
         .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-        .LogTo(Console.WriteLine, LogLevel.Information)
-        .EnableSensitiveDataLogging()
+        // .LogTo(Console.WriteLine, LogLevel.Information)
+        // .EnableSensitiveDataLogging()
         .EnableDetailedErrors();
 });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -39,6 +40,14 @@ builder.Services.AddOpenApiDocument(config =>
     config.Title = "BiTON API v1";
     config.Version = "v1";
 });
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
+
+Log.Information("Starting up");
+
+builder.Services.AddSerilog();
 
 var app = builder.Build();
 
@@ -56,7 +65,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors(MyAllowSpecificOrigins);
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 var userItems = app.MapGroup("/users");
 userItems.MapGet("/{id}", UserService.GetUser);
@@ -90,7 +99,6 @@ chnnelItems.MapPut("/{id}", ChannelService.UpdateChannel);
 chnnelItems.MapDelete("/{id}", ChannelService.DeleteChannel);
 
 chnnelItems.MapGet("/", ChannelService.GetChannels);
-
 
 app.MapGet("/", () => "Hello World!");
 

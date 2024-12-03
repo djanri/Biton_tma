@@ -68,5 +68,4 @@ public class PrizeService()
         var prizes = await db.Prizes.Where(p => p.UserId == null).ToListAsync();
         return TypedResults.Ok(prizes);
     }
-
 }
